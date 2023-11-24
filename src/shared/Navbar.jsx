@@ -20,7 +20,7 @@ const navItems = [
     { id: 2, label: "Bio Data's", path: '/biodatas' },
     { id: 3, label: 'About', path: '/about' },
     { id: 4, label: 'Contact', path: '/contact' },
-    { id: 4, label: 'Dashboard', path: '/dashboard' },
+    { id: 5, label: 'Dashboard', path: '/dashboard' },
 
 ];
 

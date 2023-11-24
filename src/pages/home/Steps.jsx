@@ -62,7 +62,7 @@ const Steps = () => {
     return (
         <>
             <SectionTitle subHeading={'MOMENTS'} heading={'How it works'}></SectionTitle>
-            <Box sx={{ maxWidth: 700, mx: 'auto', mt: '100px' }}>
+            <Box sx={{ maxWidth: 700, mx: 'auto', my: '100px' }}>
                 <Stepper activeStep={activeStep} orientation="vertical">
                     {steps.map((step, index) => (
                         <Step key={step.label}>
