@@ -8,3 +8,27 @@
 body {
   background: linear-gradient(135deg, #fdfcfb 0%, rgb(255 251 238) 100%);
 }
+
+.item-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  z-index: 10;
+}
+
+
+.ken-burns-effect {
+  animation: kenBurns 10s ease infinite alternate;
+}
+
+@keyframes kenBurns {
+  0% {
+    transform: scale(1) translate(0, 0);
+  }
+
+  100% {
+    transform: scale(1.1) translate(0, 0);
+  }
+}

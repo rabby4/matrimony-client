@@ -3,8 +3,12 @@ import { lime } from "@mui/material/colors";
 
 export const theme = createTheme({
     palette:{
-        primary: lime,
-        
+        primary: {
+            main: '#66451c'
+        },
+        secondary: {
+            main: '#eb0359'
+        }
     },
     typography:{
         h2: {
@@ -36,7 +40,6 @@ export const theme = createTheme({
             fontFamily: "Poppins",
             fontWeight: 600,
             fontSize: '14px',
-            
         },
         
     }
