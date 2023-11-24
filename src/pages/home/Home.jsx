@@ -3,6 +3,7 @@ import React from 'react';
 import Slider from './Slider';
 import ChooseUs from './ChooseUs';
 import Steps from './Steps';
+import SuccessCounter from './SuccessCounter';
 
 const Home = () => {
     return (
@@ -11,9 +12,9 @@ const Home = () => {
                 <Slider></Slider>
                 <ChooseUs></ChooseUs>
                 <Container sx={{ mt: '100px' }}>
+                    <SuccessCounter></SuccessCounter>
                     <Steps></Steps>
                 </Container>
-
             </Box>
         </>
     );
