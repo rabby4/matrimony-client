@@ -2,6 +2,7 @@ import { Container, Typography } from '@mui/material';
 import React from 'react';
 import Slider from './Slider';
 import ChooseUs from './ChooseUs';
+import Steps from './Steps';
 
 const Home = () => {
     return (
@@ -10,7 +11,7 @@ const Home = () => {
                 <Slider></Slider>
                 <ChooseUs></ChooseUs>
                 <Container sx={{ mt: '100px' }}>
-
+                    <Steps></Steps>
                 </Container>
             </div>
         </>
