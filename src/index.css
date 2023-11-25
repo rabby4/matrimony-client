@@ -42,3 +42,12 @@ body {
     margin-bottom: 45px;
   }
 }
+
+.active {
+  color: #03A9F4;
+  font-weight: 600;
+}
+
+.nonActive {
+  color: #111;
+}

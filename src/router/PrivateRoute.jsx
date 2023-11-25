@@ -14,11 +14,6 @@ const PrivateRoute = ({ children }) => {
             <Box width={'100%'} height={'100vh'} display={'flex'} sx={{ alignItems: 'center', justifyContent: 'center' }}>
                 <Lottie animationData={Couple}></Lottie>
             </Box>
-
-
-            {/* <div className="h-screen w-full flex items-center justify-center">
-                <span className="loading loading-infinity loading-lg"></span>
-            </div> */}
         </>
     }
     if (user) {
