@@ -3,8 +3,10 @@ import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook, FaInstagram } from "react-icons/fa";
+import useAuth from "../../hooks/useAuth";
 
 const Login = () => {
+    const { login, loginWithGoogle } = useAuth()
     const {
         register,
         handleSubmit,
@@ -13,7 +15,23 @@ const Login = () => {
     } = useForm()
 
     const onSubmit = (data) => {
-        console.log(data)
+        console.log(data.email, data.password)
+        login(data.email, data.password)
+            .then(result => {
+                console.log(result.user)
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    }
+    const handleGoogle = () => {
+        loginWithGoogle()
+            .then(result => {
+                console.log(result.user)
+            })
+            .catch(error => {
+                console.log(error)
+            })
     }
 
     return (
@@ -30,7 +48,7 @@ const Login = () => {
                         <Box>
                             <Typography variant="p" color="initial" sx={{ fontFamily: 'poppins' }}>START FOR FREE</Typography>
                             <Typography variant="h3" color="initial" sx={{ fontFamily: 'Playfair Display', fontSize: '30px', fontWeight: 600, my: '10px' }}>Sign in to Matrimony</Typography>
-                            <Typography variant="p" color="initial" sx={{ fontFamily: 'poppins', fontSize: '15px', fontWeight: 500, }}>Not a Member? <Link to='/' style={{ textDecoration: 'none', color: '#0b6dd7' }}>Sign Up Now</Link></Typography>
+                            <Typography variant="p" color="initial" sx={{ fontFamily: 'poppins', fontSize: '15px', fontWeight: 500, }}>Not a Member? <Link to='/register' style={{ textDecoration: 'none', color: '#0b6dd7' }}>Sign Up Now</Link></Typography>
 
                         </Box>
                         <Divider sx={{ my: '30px' }}></Divider>
@@ -58,10 +76,18 @@ const Login = () => {
                         <Divider sx={{ my: '30px', fontFamily: 'poppins' }}>OR</Divider>
                         <Box sx={{ textAlign: 'center' }}>
                             <Typography variant="p" color="initial" sx={{ fontFamily: 'poppins' }}>Continue With Social Media</Typography>
-                            <Box display={'flex'} sx={{ fontSize: '30px', textAlign: 'center', justifyContent: 'center', gap: '20px', mt: '20px' }}>
-                                <FcGoogle></FcGoogle>
-                                <FaFacebook style={{ color: '#1778f2' }}></FaFacebook>
-                                <FaInstagram style={{ color: '#d42649' }}></FaInstagram>
+                            <Box display={'flex'} sx={{ textAlign: 'center', justifyContent: 'center', gap: '5px', mt: '20px' }}>
+                                <Button onClick={handleGoogle} sx={{ fontSize: '30px', p: '0px', ":hover": { bgcolor: 'transparent' } }}>
+                                    <FcGoogle></FcGoogle>
+                                </Button>
+                                <Button sx={{ fontSize: '30px', p: '0px', ":hover": { bgcolor: 'transparent' } }}>
+                                    <FaFacebook style={{ color: '#1778f2' }}></FaFacebook>
+                                </Button>
+                                <Button sx={{ fontSize: '30px', p: '0px', ":hover": { bgcolor: 'transparent' } }}>
+                                    <FaInstagram style={{ color: '#d42649' }}></FaInstagram>
+                                </Button>
+
+
                             </Box>
                         </Box>
 

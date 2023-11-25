@@ -4,8 +4,10 @@ import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook, FaInstagram } from "react-icons/fa";
+import useAuth from "../../hooks/useAuth";
 
 const Register = () => {
+    const { createUser, updateUserProfile } = useAuth()
 
     const {
         register,
@@ -28,6 +30,33 @@ const Register = () => {
 
     const onSubmit = (data) => {
         console.log(data)
+        createUser(data.email, data.password)
+            .then(result => {
+                console.log(result.user)
+                updateUserProfile(data.name, data.photo)
+                    .then(() => {
+                        // const userInfo = {
+                        //     name: data.name,
+                        //     email: data.email
+                        // }
+                        // axiosPublic.post('/users', userInfo)
+                        //     .then(res => {
+                        //         if (res.data.insertedId) {
+                        //             console.log('user added to the database')
+                        //             reset()
+                        //             Swal.fire({
+                        //                 title: "Good job!",
+                        //                 text: "Profile update successfully",
+                        //                 icon: "success"
+                        //             });
+                        //             navigate('/')
+                        //         }
+                        //     })
+                    })
+                    .catch(error => {
+                        console.log(error)
+                    })
+            })
     }
 
     return (
@@ -44,7 +73,7 @@ const Register = () => {
                         <Box>
                             <Typography variant="p" color="initial" sx={{ fontFamily: 'poppins' }}>START FOR FREE</Typography>
                             <Typography variant="h3" color="initial" sx={{ fontFamily: 'Playfair Display', fontSize: '30px', fontWeight: 600, my: '10px' }}>Sign in to Matrimony</Typography>
-                            <Typography variant="p" color="initial" sx={{ fontFamily: 'poppins', fontSize: '15px', fontWeight: 500, }}>Already a Member? <Link to='/' style={{ textDecoration: 'none', color: '#0b6dd7' }}>Login Now</Link></Typography>
+                            <Typography variant="p" color="initial" sx={{ fontFamily: 'poppins', fontSize: '15px', fontWeight: 500, }}>Already a Member? <Link to='/login' style={{ textDecoration: 'none', color: '#0b6dd7' }}>Login Now</Link></Typography>
 
                         </Box>
                         <Divider sx={{ my: '30px' }}></Divider>
