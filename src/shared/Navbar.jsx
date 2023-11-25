@@ -85,7 +85,7 @@ const Navbar = (props) => {
                                         {item.label}
                                     </Link>
                                 ))}
-                                <Button sx={{ background: '#66451c', color: '#fff', px: '30px', ml: '40px', ":hover": { bgcolor: '#c48c46' } }}>Login</Button>
+                                <Button href="/login" sx={{ background: '#66451c', color: '#fff', px: '30px', ml: '40px', ":hover": { bgcolor: '#c48c46' } }}>Login</Button>
                             </Box>
                         </Toolbar>
                     </Container>
