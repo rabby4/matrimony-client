@@ -1,4 +1,5 @@
 import * as React from 'react';
+// import { Link } from "react-router-dom";
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,7 +13,11 @@ import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { Button, Container, Link } from '@mui/material';
+import { Avatar, Button, Container, Link, ListItemIcon, Menu, MenuItem, Tooltip } from '@mui/material';
+import useAuth from '../hooks/useAuth';
+import { NavLink } from 'react-router-dom';
+import { MdOutlineDashboard } from 'react-icons/md';
+
 
 const drawerWidth = 240;
 const navItems = [
@@ -21,16 +26,36 @@ const navItems = [
     { id: 3, label: 'About', path: '/about' },
     { id: 4, label: 'Contact', path: '/contact' },
     { id: 5, label: 'Dashboard', path: '/dashboard' },
-
 ];
+const settings = ['Profile', 'Account', 'Dashboard'];
 
 
 const Navbar = (props) => {
     const { window } = props;
     const [mobileOpen, setMobileOpen] = React.useState(false);
+    const { user, logout } = useAuth()
+    const [anchorElUser, setAnchorElUser] = React.useState(null);
+
+    console.log(user)
 
     const handleDrawerToggle = () => {
         setMobileOpen((prevState) => !prevState);
+    };
+    const handleLogout = () => {
+        logout()
+            .then(() => {
+                console.log('logged out successful')
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    }
+
+    const handleOpenUserMenu = (event) => {
+        setAnchorElUser(event.currentTarget);
+    };
+    const handleCloseUserMenu = () => {
+        setAnchorElUser(null);
     };
 
     const drawer = (
@@ -85,8 +110,56 @@ const Navbar = (props) => {
                                         {item.label}
                                     </Link>
                                 ))}
-                                <Button href="/login" sx={{ background: '#66451c', color: '#fff', px: '30px', ml: '40px', ":hover": { bgcolor: '#c48c46' } }}>Login</Button>
                             </Box>
+                            {
+                                user ? <Box sx={{ ml: '30px' }}>
+                                    <Tooltip title="Open settings">
+                                        <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                                            <Avatar alt="Remy Sharp" src={user?.photoURL} />
+                                        </IconButton>
+                                    </Tooltip>
+                                    <Menu
+                                        sx={{ mt: '45px', }}
+                                        id="menu-appbar"
+                                        anchorEl={anchorElUser}
+                                        anchorOrigin={{
+                                            vertical: 'top',
+                                            horizontal: 'right',
+                                        }}
+                                        keepMounted
+                                        transformOrigin={{
+                                            vertical: 'top',
+                                            horizontal: 'right',
+                                        }}
+                                        open={Boolean(anchorElUser)}
+                                        onClose={handleCloseUserMenu}
+                                    >
+                                        {/* {settings.map((setting) => (
+                                            <MenuItem key={setting} onClick={handleCloseUserMenu} sx={{ px: '40px' }}>
+                                                <Typography textAlign="center">{setting}</Typography>
+                                            </MenuItem>
+                                        ))} */}
+                                        {/* <MenuItem sx={{ px: '40px' }}>
+                                            <Typography textAlign="center" ><Link href='/'>Home</Link></Typography>
+                                        </MenuItem> */}
+
+                                        <MenuItem sx={{ px: '40px' }}>
+                                            <NavLink className={({ isActive, isPending }) => isPending ? "pending" : isActive ? "active" : "nonActive"} to='/dashboard/admin-dashboard' style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }} >
+                                                <ListItemIcon>
+                                                    <MdOutlineDashboard style={{ fontSize: '20px', color: '#111' }}></MdOutlineDashboard>
+                                                </ListItemIcon>
+                                                <ListItemText style={{ fontFamily: 'poppins', fontWeight: 600, textDecoration: 'none', }}>Dashboard</ListItemText>
+                                            </NavLink>
+                                        </MenuItem>
+
+                                        <Button onClick={handleLogout} sx={{ px: '40px', fontWeight: 600, ":hover": { bgcolor: 'transparent' } }}>Logout</Button>
+
+                                    </Menu>
+                                </Box>
+                                    :
+
+                                    <Button href="/login" sx={{ background: '#66451c', color: '#fff', px: '30px', ml: '40px', ":hover": { bgcolor: '#c48c46' } }}>Login</Button>
+                            }
                         </Toolbar>
                     </Container>
                 </AppBar>

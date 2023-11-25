@@ -16,11 +16,13 @@ import EditBioData from "../pages/Dashboard/UsersDashboard/EditBioData";
 import ViewBioData from "../pages/Dashboard/UsersDashboard/ViewBioData";
 import MyContactRequest from "../pages/Dashboard/UsersDashboard/MyContactRequest";
 import FavoritesBioData from "../pages/Dashboard/UsersDashboard/FavoritesBioData";
+import Error from "../pages/error/Error";
 
 const router = createBrowserRouter([
     {
         path: "/",
         element: <Main></Main>,
+        errorElement: <Error></Error>,
         children: [
             {
                 index: true,
