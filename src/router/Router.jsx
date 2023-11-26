@@ -45,7 +45,7 @@ const router = createBrowserRouter([
     },
     {
         path: 'dashboard',
-        element: <Dashboard></Dashboard>,
+        element: <PrivateRoute><Dashboard></Dashboard></PrivateRoute>,
         children: [
             // admin routes
             {
@@ -71,7 +71,7 @@ const router = createBrowserRouter([
             },
             {
                 path: 'edit-bio-data',
-                element: <PrivateRoute><EditBioData></EditBioData></PrivateRoute>
+                element: <EditBioData></EditBioData>,
             },
             {
                 path: 'view-bio-data',

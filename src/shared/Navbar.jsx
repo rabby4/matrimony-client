@@ -16,7 +16,9 @@ import Typography from '@mui/material/Typography';
 import { Avatar, Button, Container, Link, ListItemIcon, Menu, MenuItem, Tooltip } from '@mui/material';
 import useAuth from '../hooks/useAuth';
 import { NavLink } from 'react-router-dom';
-import { MdOutlineDashboard } from 'react-icons/md';
+import { MdOutlineDashboard, MdVerifiedUser } from 'react-icons/md';
+import { FaRegUser } from "react-icons/fa";
+import { IoExitOutline } from "react-icons/io5";
 
 
 const drawerWidth = 240;
@@ -35,6 +37,7 @@ const Navbar = (props) => {
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const { user, logout } = useAuth()
     const [anchorElUser, setAnchorElUser] = React.useState(null);
+
 
     const handleDrawerToggle = () => {
         setMobileOpen((prevState) => !prevState);
@@ -144,13 +147,22 @@ const Navbar = (props) => {
                                         <MenuItem sx={{ px: '40px' }}>
                                             <NavLink className={({ isActive, isPending }) => isPending ? "pending" : isActive ? "active" : "nonActive"} to='/dashboard/admin-dashboard' style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }} >
                                                 <ListItemIcon>
+                                                    <FaRegUser style={{ fontSize: '20px', color: '#111' }}></FaRegUser>
+                                                </ListItemIcon>
+                                                <ListItemText style={{ fontFamily: 'poppins', fontWeight: 600, textDecoration: 'none', }}>{user?.displayName}</ListItemText>
+                                            </NavLink>
+                                        </MenuItem>
+
+                                        <MenuItem sx={{ px: '40px' }}>
+                                            <NavLink className={({ isActive, isPending }) => isPending ? "pending" : isActive ? "active" : "nonActive"} to='/dashboard/admin-dashboard' style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }} >
+                                                <ListItemIcon>
                                                     <MdOutlineDashboard style={{ fontSize: '20px', color: '#111' }}></MdOutlineDashboard>
                                                 </ListItemIcon>
                                                 <ListItemText style={{ fontFamily: 'poppins', fontWeight: 600, textDecoration: 'none', }}>Dashboard</ListItemText>
                                             </NavLink>
                                         </MenuItem>
 
-                                        <Button onClick={handleLogout} sx={{ px: '40px', fontWeight: 600, ":hover": { bgcolor: 'transparent' } }}>Logout</Button>
+                                        <Button onClick={handleLogout} display={'flex'} sx={{ px: '40px', fontWeight: 600, ":hover": { bgcolor: 'transparent' }, gap: '15px' }}><IoExitOutline style={{ fontSize: '20px', color: '#111' }}></IoExitOutline> Logout</Button>
 
                                     </Menu>
                                 </Box>

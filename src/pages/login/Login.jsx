@@ -1,12 +1,14 @@
 import { Box, Button, Checkbox, Container, Divider, Stack, TextField, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook, FaInstagram } from "react-icons/fa";
 import useAuth from "../../hooks/useAuth";
+import Swal from "sweetalert2";
 
 const Login = () => {
     const { login, loginWithGoogle } = useAuth()
+    const navigate = useNavigate()
     const {
         register,
         handleSubmit,
@@ -19,6 +21,12 @@ const Login = () => {
         login(data.email, data.password)
             .then(result => {
                 console.log(result.user)
+                Swal.fire({
+                    title: "Good job!",
+                    text: "Registrations successfully",
+                    icon: "success"
+                });
+                navigate('/')
             })
             .catch(error => {
                 console.log(error)

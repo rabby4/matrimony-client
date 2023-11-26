@@ -1,17 +1,23 @@
 import { Box, Button, Checkbox, Container, Divider, Input, Stack, TextField, Typography, styled } from "@mui/material";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook, FaInstagram } from "react-icons/fa";
 import useAuth from "../../hooks/useAuth";
+import axios from "axios";
+import Swal from "sweetalert2";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 const Register = () => {
     const { createUser, updateUserProfile } = useAuth()
+    const navigate = useNavigate()
+    const axiosPublic = useAxiosPublic()
 
     const {
         register,
         handleSubmit,
+        reset,
         watch,
         formState: { errors },
     } = useForm()
@@ -28,30 +34,31 @@ const Register = () => {
         width: 100,
     });
 
-    const onSubmit = (data) => {
+    const onSubmit = async (data) => {
         console.log(data)
         createUser(data.email, data.password)
             .then(result => {
                 console.log(result.user)
                 updateUserProfile(data.name, data.photo)
                     .then(() => {
-                        // const userInfo = {
-                        //     name: data.name,
-                        //     email: data.email
-                        // }
-                        // axiosPublic.post('/users', userInfo)
-                        //     .then(res => {
-                        //         if (res.data.insertedId) {
-                        //             console.log('user added to the database')
-                        //             reset()
-                        //             Swal.fire({
-                        //                 title: "Good job!",
-                        //                 text: "Profile update successfully",
-                        //                 icon: "success"
-                        //             });
-                        //             navigate('/')
-                        //         }
-                        //     })
+                        const userInfo = {
+                            name: data.name,
+                            email: data.email,
+                            photo: data.photoURL
+                        }
+                        axiosPublic.post('/users', userInfo)
+                            .then(res => {
+                                if (res.data.insertedId) {
+                                    console.log('user added to the database')
+                                    reset()
+                                    Swal.fire({
+                                        title: "Good job!",
+                                        text: "Registrations successfully",
+                                        icon: "success"
+                                    });
+                                    navigate('/')
+                                }
+                            })
                     })
                     .catch(error => {
                         console.log(error)
@@ -99,17 +106,24 @@ const Register = () => {
                                 {...register("password")}
                                 sx={{ width: '100%', }}
                             />
-                            <Button component="label" variant="contained" sx={{ mt: '20px' }} startIcon={<CloudUploadIcon />}>
+                            <TextField
+                                id="photo"
+                                label="Photo URL"
+                                size="small"
+                                {...register("photo")}
+                                sx={{ width: '100%', mt: '20px' }}
+                            />
+                            {/* <Button component="label" variant="contained" sx={{ mt: '20px' }} startIcon={<CloudUploadIcon />}>
                                 Upload file
                                 <VisuallyHiddenInput type="file" {...register("file")} />
-                            </Button>
+                            </Button> */}
 
                             <Box display={'flex'} sx={{ alignItems: 'center', my: '20px', }}>
                                 <Checkbox size="small" />
                                 <Typography variant="p" color="initial" sx={{ fontFamily: 'poppins', fontSize: '15px', fontWeight: 500, }}>Accept Our <Link to='/' style={{ textDecoration: 'none', color: '#0b6dd7' }}>Terms and Conditions</Link></Typography>
                             </Box>
 
-                            <Button type="submit" sx={{ width: '100%', background: '#66451c', color: '#fff', px: '30px', ":hover": { bgcolor: '#c48c46' } }}>Login</Button>
+                            <Button type="submit" sx={{ width: '100%', background: '#66451c', color: '#fff', px: '30px', ":hover": { bgcolor: '#c48c46' } }}>Registration Now</Button>
                         </form>
                         <Divider sx={{ my: '30px', fontFamily: 'poppins' }}>OR</Divider>
                         <Box sx={{ textAlign: 'center' }}>
