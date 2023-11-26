@@ -36,8 +36,6 @@ const Navbar = (props) => {
     const { user, logout } = useAuth()
     const [anchorElUser, setAnchorElUser] = React.useState(null);
 
-    console.log(user)
-
     const handleDrawerToggle = () => {
         setMobileOpen((prevState) => !prevState);
     };

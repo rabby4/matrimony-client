@@ -17,6 +17,7 @@ import ViewBioData from "../pages/Dashboard/UsersDashboard/ViewBioData";
 import MyContactRequest from "../pages/Dashboard/UsersDashboard/MyContactRequest";
 import FavoritesBioData from "../pages/Dashboard/UsersDashboard/FavoritesBioData";
 import Error from "../pages/error/Error";
+import PrivateRoute from "./PrivateRoute";
 
 const router = createBrowserRouter([
     {
@@ -70,7 +71,7 @@ const router = createBrowserRouter([
             },
             {
                 path: 'edit-bio-data',
-                element: <EditBioData></EditBioData>
+                element: <PrivateRoute><EditBioData></EditBioData></PrivateRoute>
             },
             {
                 path: 'view-bio-data',

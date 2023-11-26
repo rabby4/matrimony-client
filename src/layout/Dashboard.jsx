@@ -13,7 +13,7 @@ import useAuth from '../hooks/useAuth';
 
 
 const Dashboard = () => {
-    const { logout } = useAuth()
+    const { user, logout } = useAuth()
 
     const handleLogout = () => {
         logout()
@@ -28,11 +28,11 @@ const Dashboard = () => {
     return (
         <>
             <Container>
-                <Box display={'flex'} sx={{ my: '120px', gap: '50px' }}>
+                <Box display={'flex'} sx={{ my: '120px', gap: '100px' }}>
                     <Box>
 
-                        <Paper sx={{ width: 320, maxWidth: '100%', textAlign: 'center', p: '20px', overflow: 'hidden' }}>
-                            <img src="https://i.ibb.co/sR2j7YR/user.jpg" alt="" width={'100%'} style={{ borderRadius: '15px' }} />
+                        <Paper sx={{ width: 320, maxWidth: '100%', textAlign: 'center', p: '20px', overflow: 'hidden', position: 'sticky', top: '120px' }}>
+                            <img src={user?.photoURL} alt="" width={'100%'} style={{ borderRadius: '15px' }} />
                             <MenuList sx={{ textAlign: 'left' }}>
                                 {/* Admin routes start from here */}
                                 <MenuItem >
@@ -140,7 +140,7 @@ const Dashboard = () => {
                             </MenuList>
                         </Paper>
                     </Box>
-                    <Box>
+                    <Box width={'100%'}>
                         <Navbar></Navbar>
                         <Outlet></Outlet>
 

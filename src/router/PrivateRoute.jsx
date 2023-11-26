@@ -11,7 +11,7 @@ const PrivateRoute = ({ children }) => {
     const location = useLocation()
     if (loading) {
         return <>
-            <Box width={'100%'} height={'100vh'} display={'flex'} sx={{ alignItems: 'center', justifyContent: 'center' }}>
+            <Box width={'50%'} height={'50vh'} display={'flex'} sx={{ alignItems: 'center', justifyContent: 'center' }}>
                 <Lottie animationData={Couple}></Lottie>
             </Box>
         </>

@@ -51,3 +51,42 @@ body {
 .nonActive {
   color: #111;
 }
+
+.fiftyWith {
+  width: 50%;
+}
+
+.singleInput {
+  display: flex;
+  flex-direction: column;
+}
+
+.inputLabel {
+  color: #66451c;
+  font-weight: 500;
+  font-family: poppins;
+  margin-bottom: 5px;
+}
+
+.inputDesign {
+  padding: 8px 10px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  font-size: 16px;
+  color: #8b8b8b;
+  border: 2px solid #8b8b8b;
+}
+
+input.inputDesign:focus-visible {
+  border-color: #66451c;
+}
+
+.selectField {
+  padding: 7px 10px 7px 10px;
+  font-size: 16px;
+  font-family: 'Poppins';
+  border: 1px solid;
+  border-color: rgb(133, 133, 133);
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
