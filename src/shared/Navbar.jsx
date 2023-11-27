@@ -19,16 +19,11 @@ import { NavLink } from 'react-router-dom';
 import { MdOutlineDashboard, MdVerifiedUser } from 'react-icons/md';
 import { FaRegUser } from "react-icons/fa";
 import { IoExitOutline } from "react-icons/io5";
+import useAdmin from '../hooks/useAdmin';
 
 
 const drawerWidth = 240;
-const navItems = [
-    { id: 1, label: 'Home', path: '/' },
-    { id: 2, label: "Bio Data's", path: '/biodatas' },
-    { id: 3, label: 'About', path: '/about' },
-    { id: 4, label: 'Contact', path: '/contact' },
-    { id: 5, label: 'Dashboard', path: '/dashboard' },
-];
+
 const settings = ['Profile', 'Account', 'Dashboard'];
 
 
@@ -36,8 +31,16 @@ const Navbar = (props) => {
     const { window } = props;
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const { user, logout } = useAuth()
+    const [isAdmin] = useAdmin()
     const [anchorElUser, setAnchorElUser] = React.useState(null);
 
+    const navItems = [
+        { id: 1, label: 'Home', path: '/' },
+        { id: 2, label: "Bio Data's", path: '/biodatas' },
+        { id: 3, label: 'About', path: '/about' },
+        { id: 4, label: 'Contact', path: '/contact' },
+        // user && { id: 5, label: 'Dashboard', path: isAdmin ? '/dashboard/admin-dashboard' : '/dashboard/user-dashboard' }
+    ];
 
     const handleDrawerToggle = () => {
         setMobileOpen((prevState) => !prevState);
@@ -66,7 +69,7 @@ const Navbar = (props) => {
             </Typography>
             <Divider />
             <List>
-                {navItems.map((item) => (
+                {navItems?.map((item) => (
                     <ListItem key={item.id} disablePadding>
                         <ListItemButton sx={{ textAlign: 'center' }}>
                             <ListItemText>
@@ -75,6 +78,13 @@ const Navbar = (props) => {
                         </ListItemButton>
                     </ListItem>
                 ))}
+                {user && <ListItem>
+                    <ListItemButton>
+                        <ListItemText>
+                            <Link href={isAdmin ? '/dashboard/admin-dashboard' : '/dashboard/user-dashboard'} sx={{ textDecoration: 'none' }}>Dashboard</Link>
+                        </ListItemText>
+                    </ListItemButton>
+                </ListItem>}
             </List>
         </Box>
     );
@@ -106,11 +116,16 @@ const Navbar = (props) => {
                                 <Link href={'/'}><img width='250px' src="https://rn53themes.net/themes/matrimo/images/logo-b.png" alt="" /></Link>
                             </Typography>
                             <Box sx={{ display: { xs: 'none', md: 'block' } }}>
-                                {navItems.map((item) => (
+                                {navItems?.map((item) => (
                                     <Link key={item.id} sx={{ color: 'primary', fontWeight: 600, textDecoration: 'none', ml: '40px' }} href={item.path}>
                                         {item.label}
                                     </Link>
                                 ))}
+                                {
+                                    user && <Link sx={{ color: 'primary', fontWeight: 600, textDecoration: 'none', ml: '40px' }} href={isAdmin ? '/dashboard/admin-dashboard' : '/dashboard/user-dashboard'}>
+                                        Dashboard
+                                    </Link>
+                                }
                             </Box>
                             {
                                 user ? <Box sx={{ ml: '30px' }}>
