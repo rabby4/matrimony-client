@@ -5,9 +5,11 @@ import { FcGoogle } from "react-icons/fc";
 import { FaFacebook, FaInstagram } from "react-icons/fa";
 import useAuth from "../../hooks/useAuth";
 import Swal from "sweetalert2";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 const Login = () => {
     const { login, loginWithGoogle } = useAuth()
+    const axiosPublic = useAxiosPublic()
     const navigate = useNavigate()
     const {
         register,
@@ -36,6 +38,15 @@ const Login = () => {
         loginWithGoogle()
             .then(result => {
                 console.log(result.user)
+                const userInfo = {
+                    email: result.user?.email,
+                    name: result.user?.displayName
+                }
+                axiosPublic.post('/users', userInfo)
+                    .then(res => {
+                        console.log(res.data)
+                        navigate('/')
+                    })
             })
             .catch(error => {
                 console.log(error)

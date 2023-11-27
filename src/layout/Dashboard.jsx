@@ -10,10 +10,12 @@ import { MdOutlineWorkspacePremium, MdConnectWithoutContact, MdOutlinePageview, 
 import Navbar from '../shared/Navbar';
 import Footer from '../shared/Footer';
 import useAuth from '../hooks/useAuth';
+import useUser from '../hooks/useUser';
 
 
 const Dashboard = () => {
     const { user, logout } = useAuth()
+    const [userInfo] = useUser()
 
     const handleLogout = () => {
         logout()
@@ -31,8 +33,8 @@ const Dashboard = () => {
                 <Box display={'flex'} sx={{ my: '120px', gap: '100px' }}>
                     <Box>
 
-                        <Paper sx={{ width: 320, maxWidth: '100%', textAlign: 'center', p: '20px', overflow: 'hidden', position: 'sticky', top: '120px' }}>
-                            <img src={user?.photoURL} alt="" width={'100%'} style={{ borderRadius: '15px' }} />
+                        <Paper sx={{ width: 320, maxWidth: '100%', textAlign: 'center', p: '20px', overflow: 'hidden', position: 'sticky', top: '120px', borderRadius: '5px', boxShadow: '0px 5px 40px 0px #1111112b' }}>
+                            <img src={user?.photoURL || userInfo?.photo} alt="" width={'100%'} style={{ borderRadius: '15px' }} />
                             <MenuList sx={{ textAlign: 'left' }}>
                                 {/* Admin routes start from here */}
                                 <MenuItem >

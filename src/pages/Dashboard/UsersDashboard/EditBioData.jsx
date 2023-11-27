@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import useAuth from '../../../hooks/useAuth';
 import useAxiosPublic from '../../../hooks/useAxiosPublic';
 import useUser from '../../../hooks/useUser';
+import Swal from 'sweetalert2';
 
 
 const EditBioData = () => {
@@ -55,6 +56,15 @@ const EditBioData = () => {
 
         const res = await axiosPublic.patch(`/users/${userInfo?._id}`, userData)
         console.log(res.data)
+        if (res.data.modifiedCount > 0) {
+            Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "Your work has been saved",
+                showConfirmButton: false,
+                timer: 1500
+            });
+        }
     }
 
 

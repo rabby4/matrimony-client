@@ -10,6 +10,7 @@ import Swal from "sweetalert2";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 const Register = () => {
+    const { loginWithGoogle } = useAuth()
     const { createUser, updateUserProfile } = useAuth()
     const navigate = useNavigate()
     const axiosPublic = useAxiosPublic()
@@ -33,6 +34,25 @@ const Register = () => {
         whiteSpace: 'nowrap',
         width: 100,
     });
+    const handleGoogle = () => {
+        loginWithGoogle()
+            .then(result => {
+                console.log(result.user)
+                const userInfo = {
+                    email: result.user?.email,
+                    name: result.user?.displayName
+                }
+                axiosPublic.post('/users', userInfo)
+                    .then(res => {
+                        console.log(res.data)
+                        navigate('/')
+                    })
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    }
+
 
     const onSubmit = async (data) => {
         console.log(data)
@@ -128,10 +148,16 @@ const Register = () => {
                         <Divider sx={{ my: '30px', fontFamily: 'poppins' }}>OR</Divider>
                         <Box sx={{ textAlign: 'center' }}>
                             <Typography variant="p" color="initial" sx={{ fontFamily: 'poppins' }}>Continue With Social Media</Typography>
-                            <Box display={'flex'} sx={{ fontSize: '30px', textAlign: 'center', justifyContent: 'center', gap: '20px', mt: '20px' }}>
-                                <FcGoogle></FcGoogle>
-                                <FaFacebook style={{ color: '#1778f2' }}></FaFacebook>
-                                <FaInstagram style={{ color: '#d42649' }}></FaInstagram>
+                            <Box display={'flex'} sx={{ textAlign: 'center', justifyContent: 'center', gap: '5px', mt: '20px' }}>
+                                <Button onClick={handleGoogle} sx={{ fontSize: '30px', p: '0px', ":hover": { bgcolor: 'transparent' } }}>
+                                    <FcGoogle></FcGoogle>
+                                </Button>
+                                <Button sx={{ fontSize: '30px', p: '0px', ":hover": { bgcolor: 'transparent' } }}>
+                                    <FaFacebook style={{ color: '#1778f2' }}></FaFacebook>
+                                </Button>
+                                <Button sx={{ fontSize: '30px', p: '0px', ":hover": { bgcolor: 'transparent' } }}>
+                                    <FaInstagram style={{ color: '#d42649' }}></FaInstagram>
+                                </Button>
                             </Box>
                         </Box>
 
