@@ -18,6 +18,7 @@ import MyContactRequest from "../pages/Dashboard/UsersDashboard/MyContactRequest
 import FavoritesBioData from "../pages/Dashboard/UsersDashboard/FavoritesBioData";
 import Error from "../pages/error/Error";
 import PrivateRoute from "./PrivateRoute";
+import AllBioData from "../pages/bioData/AllBioData";
 
 const router = createBrowserRouter([
     {
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
             {
                 path: '/about',
                 element: <About></About>
+            },
+            {
+                path: '/biodatas',
+                element: <PrivateRoute><AllBioData></AllBioData></PrivateRoute>
             }
         ]
     },

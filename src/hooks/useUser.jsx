@@ -13,7 +13,14 @@ const useUser = () => {
             return res.data;
         },
     })
-    return [userInfo]
+    const { data: allUser } = useQuery({
+        queryKey: ['users'],
+        queryFn: async () => {
+            const res = await axiosPublic.get(`/users`);
+            return res.data;
+        },
+    })
+    return [userInfo, allUser]
 };
 
 export default useUser;

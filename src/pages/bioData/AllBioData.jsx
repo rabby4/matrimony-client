@@ -1,44 +1,39 @@
-import { Box, Button, Container, ListItemIcon, ListItemText, MenuItem, MenuList, Paper, Typography } from '@mui/material';
-import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import React from 'react';
-import { NavLink, Outlet } from 'react-router-dom';
-import { MdOutlineDashboard } from "react-icons/md";
-import { FaUsersGear } from "react-icons/fa6";
-import { MdOutlineWorkspacePremium, MdConnectWithoutContact, MdOutlinePageview, MdEditNote, MdFavoriteBorder } from "react-icons/md";
-import Navbar from '../shared/Navbar';
-import Footer from '../shared/Footer';
-import useAuth from '../hooks/useAuth';
-import useUser from '../hooks/useUser';
-import useAdmin from '../hooks/useAdmin';
+import React, { useEffect, useState } from 'react';
+import useUser from '../../hooks/useUser';
+import { Box, Button, Container, Grid, ListItemIcon, ListItemText, MenuItem, MenuList, Paper, Typography } from '@mui/material';
+import { MdConnectWithoutContact, MdEditNote, MdFavoriteBorder, MdOutlineDashboard, MdOutlinePageview, MdOutlineWorkspacePremium } from 'react-icons/md';
+import { NavLink } from 'react-router-dom';
+import { FaUsersGear } from 'react-icons/fa6';
 
+const AllBioData = () => {
+    const [, allUser] = useUser()
+    const [maleData, setMaleData] = useState(false)
+    const [femaleData, setFemaleData] = useState(false)
+    const [filteredData, setFilteredData] = useState([])
+    const users = allUser?.filter(user => user.role !== 'admin')
+    console.log(users)
 
-const Dashboard = () => {
-    const { user, logout } = useAuth()
-    const [isAdmin] = useAdmin()
-    const [userInfo] = useUser()
+    useEffect(() => {
+        const filtered = users.filter(item => {
+            if (maleData && item.gender === 'male') return true;
+            if (femaleData && item.gender === 'female') return true;
+            return false
+        })
+        setFilteredData(filtered)
+    }, [maleData, femaleData, users])
 
-    const handleLogout = () => {
-        logout()
-            .then(() => {
-                console.log('logged out successful')
-            })
-            .catch(error => {
-                console.log(error)
-            })
-    }
 
     return (
         <>
             <Container>
-                <Box display={'flex'} sx={{ my: '120px', gap: '100px' }}>
-                    <Box>
-
-                        <Paper sx={{ width: 320, maxWidth: '100%', textAlign: 'center', p: '20px', overflow: 'hidden', position: 'sticky', top: '120px', borderRadius: '5px', boxShadow: '0px 5px 40px 0px #1111112b' }}>
-                            <img src={userInfo?.photo ? userInfo?.photo : user?.photoURL} alt="" width={'100%'} style={{ borderRadius: '15px' }} referrerPolicy="no-referrer" />
+                <Box display={'flex'} sx={{ my: '120px', gap: '70px' }}>
+                    <Box width={'30%'}>
+                        <Paper sx={{ maxWidth: '100%', textAlign: 'center', p: '20px', overflow: 'hidden', position: 'sticky', top: '120px', borderRadius: '5px', boxShadow: '0px 5px 40px 0px #1111112b' }}>
+                            <img alt="" width={'100%'} style={{ borderRadius: '15px' }} referrerPolicy="no-referrer" />
                             <MenuList sx={{ textAlign: 'left' }}>
                                 {/* Admin routes start from here */}
                                 {
-                                    isAdmin ? <Box>
+                                    users ? <Box>
                                         <MenuItem >
                                             <NavLink className={({ isActive, isPending }) => isPending ? "pending" : isActive ? "active" : "nonActive"} to='/dashboard/admin-dashboard' style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }} >
                                                 <ListItemIcon>
@@ -136,30 +131,37 @@ const Dashboard = () => {
 
                                     </Box>
                                 }
-                                {/* admin routes end here */}
 
-                                {/* users routes start from here */}
 
-                                {/* users routes end from here */}
 
-                                <Button onClick={handleLogout} variant="outlined" startIcon={<ExitToAppIcon />} sx={{ bgcolor: '#d32f2f', color: '#fff', border: 'none', ":hover": { border: 'none', bgcolor: '#f44336' }, mt: '20px', fontWeight: 600, fontSize: '14px' }}>
-                                    Logout
-                                </Button>
 
 
                             </MenuList>
                         </Paper>
                     </Box>
-                    <Box width={'100%'}>
-                        <Navbar></Navbar>
-                        <Outlet></Outlet>
-
-                    </Box>
+                    <Grid container justifyContent='space-between' spacing={3} width={'70%'}>
+                        {
+                            users?.map(user => <Grid item key={user._id} xs={12} sm={12} md={6}>
+                                <Paper sx={{ maxWidth: '100%', p: '20px', overflow: 'hidden', position: 'sticky', top: '120px', borderRadius: '10px', boxShadow: '0px 5px 40px 0px #1111112b' }}>
+                                    <img src={user?.photo} alt="" width={'100%'} height={'250px'} style={{ borderRadius: '5px' }} referrerPolicy="no-referrer" />
+                                    <Box>
+                                        <Typography sx={{ my: '5px' }}><span style={{ fontWeight: '600', }}>Name :</span> {user.name}</Typography>
+                                        <Typography><span style={{ fontWeight: '600' }}>Gender :</span> {user.gender}</Typography>
+                                        <Typography sx={{ my: '5px' }}><span style={{ fontWeight: '600', }}>Age :</span> {user.age} years</Typography>
+                                        <Typography><span style={{ fontWeight: '600' }}>Occupation :</span> {user.occupation}</Typography>
+                                        <Typography sx={{ my: '5px' }}><span style={{ fontWeight: '600', }}>Permanent Division :</span> {user.permanentDivision}</Typography>
+                                    </Box>
+                                    <Box display={'flex'} justifyContent={'end'} sx={{ mt: '20px' }}>
+                                        <Button href="/" sx={{ background: '#66451c', color: '#fff', px: '30px', ":hover": { bgcolor: '#c48c46' } }}>View Profile</Button>
+                                    </Box>
+                                </Paper>
+                            </Grid>)
+                        }
+                    </Grid>
                 </Box>
             </Container>
-            <Footer></Footer>
         </>
     );
 };
 
-export default Dashboard;
+export default AllBioData;
