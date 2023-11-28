@@ -1,147 +1,174 @@
 import React, { useEffect, useState } from 'react';
 import useUser from '../../hooks/useUser';
-import { Box, Button, Container, Grid, ListItemIcon, ListItemText, MenuItem, MenuList, Paper, Typography } from '@mui/material';
+import { Box, Button, Checkbox, Container, FormControlLabel, Grid, ListItemIcon, ListItemText, MenuItem, MenuList, Paper, Slider, Typography } from '@mui/material';
 import { MdConnectWithoutContact, MdEditNote, MdFavoriteBorder, MdOutlineDashboard, MdOutlinePageview, MdOutlineWorkspacePremium } from 'react-icons/md';
 import { NavLink } from 'react-router-dom';
 import { FaUsersGear } from 'react-icons/fa6';
+import { Label } from '@mui/icons-material';
 
 const AllBioData = () => {
     const [, allUser] = useUser()
+
     const [maleData, setMaleData] = useState(false)
     const [femaleData, setFemaleData] = useState(false)
-    const [filteredData, setFilteredData] = useState([])
-    const users = allUser?.filter(user => user.role !== 'admin')
-    console.log(users)
+    const [dhakaData, setDhakaData] = useState(false)
+    const [chittagongData, setChittagongData] = useState(false)
+    const [barisalData, setBarisalData] = useState(false)
+    const [mymensinghData, setMymensinghData] = useState(false)
+    const [rajshahiData, setRajshahiData] = useState(false)
+    const [rangpurData, setRangpurData] = useState(false)
+    const [sylhetData, setSylhetData] = useState(false)
+    const [khulnaData, setKhulnaData] = useState(false)
 
-    useEffect(() => {
-        const filtered = users.filter(item => {
-            if (maleData && item.gender === 'male') return true;
-            if (femaleData && item.gender === 'female') return true;
-            return false
-        })
-        setFilteredData(filtered)
-    }, [maleData, femaleData, users])
+    const filteredData = allUser?.filter(item => {
+        if (item.role !== 'admin') {
+            if (maleData && item.gender === 'Male') {
+                return true
+            }
+            if (femaleData && item.gender === 'Female') {
+                return true
+            }
+            if (dhakaData && item.permanentDivision
+                === 'Dhaka') {
+                return true
+            }
+            if (chittagongData && item.permanentDivision
+                === 'Chittagong') {
+                return true
+            }
+            if (barisalData && item.permanentDivision
+                === 'Barisal') {
+                return true
+            }
+            if (mymensinghData && item.permanentDivision
+                === 'Mymensingh') {
+                return true
+            }
+            if (rajshahiData && item.permanentDivision
+                === 'Rajshahi') {
+                return true
+            }
+            if (rangpurData && item.permanentDivision
+                === 'Rangpur') {
+                return true
+            }
+            if (sylhetData && item.permanentDivision
+                === 'Sylhet') {
+                return true
+            }
+            if (khulnaData && item.permanentDivision
+                === 'Khulna') {
+                return true
+            }
+            return !maleData && !femaleData && !dhakaData && !chittagongData && !barisalData && !mymensinghData && !rajshahiData && !rangpurData && !sylhetData && !khulnaData;
+        }
+        return false
+    }) || []
+
+
+    const handleGenderCheckBox = (gender) => {
+        if (gender === 'Male') {
+            setMaleData(!maleData)
+        } else if (gender === 'Female') {
+            setFemaleData(!femaleData)
+        }
+    }
+
+    const handleDivisionCheckbox = (division) => {
+        if (division === 'Dhaka') {
+            setDhakaData(!dhakaData)
+        } else if (division === 'Chittagong') {
+            setChittagongData(!chittagongData)
+        } else if (division === 'Barisal') {
+            setBarisalData(!barisalData)
+        } else if (division === 'Mymensingh') {
+            setMymensinghData(!mymensinghData)
+        } else if (division === 'Rajshahi') {
+            setRajshahiData(!rajshahiData)
+        } else if (division === 'Rangpur') {
+            setRangpurData(!rangpurData)
+        } else if (division === 'Sylhet') {
+            setSylhetData(!sylhetData)
+        } else if (division === 'Khulna') {
+            setKhulnaData(!khulnaData)
+        }
+    }
 
 
     return (
         <>
             <Container>
+                <Box sx={{ mt: '150px', textAlign: 'center' }}>
+                    <Typography variant='h2'>View All Bio Data</Typography>
+                </Box>
                 <Box display={'flex'} sx={{ my: '120px', gap: '70px' }}>
                     <Box width={'30%'}>
-                        <Paper sx={{ maxWidth: '100%', textAlign: 'center', p: '20px', overflow: 'hidden', position: 'sticky', top: '120px', borderRadius: '5px', boxShadow: '0px 5px 40px 0px #1111112b' }}>
-                            <img alt="" width={'100%'} style={{ borderRadius: '15px' }} referrerPolicy="no-referrer" />
+                        <Paper sx={{ maxWidth: '100%', textAlign: 'center', p: '50px', overflow: 'hidden', position: 'sticky', top: '120px', borderRadius: '5px', boxShadow: '0px 5px 40px 0px #1111112b' }}>
+                            <Box>
+                                <Typography sx={{ fontSize: '18px', fontWeight: 600, mb: '15px', textAlign: 'left' }}>Filter by Age</Typography>
+                                <Slider
+                                    getAriaLabel={() => 'Temperature range'}
+                                    value={0}
+                                    // onChange={handleChange}
+                                    valueLabelDisplay="auto"
+                                // getAriaValueText={valuetext}
+                                />
+                            </Box>
                             <MenuList sx={{ textAlign: 'left' }}>
-                                {/* Admin routes start from here */}
-                                {
-                                    users ? <Box>
-                                        <MenuItem >
-                                            <NavLink className={({ isActive, isPending }) => isPending ? "pending" : isActive ? "active" : "nonActive"} to='/dashboard/admin-dashboard' style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }} >
-                                                <ListItemIcon>
-                                                    <MdOutlineDashboard style={{ fontSize: '20px', color: '#111' }}></MdOutlineDashboard>
-                                                </ListItemIcon>
-                                                <ListItemText style={{ fontFamily: 'poppins', fontWeight: 600, textDecoration: 'none', }}>Dashboard</ListItemText>
-                                            </NavLink>
-                                        </MenuItem>
-
-                                        <MenuItem >
-                                            <NavLink className={({ isActive, isPending }) => isPending ? "pending" : isActive ? "active" : "nonActive"} to='/dashboard/manage-users' style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }} >
-                                                <ListItemIcon>
-                                                    <FaUsersGear style={{ fontSize: '20px', color: '#111' }}></FaUsersGear>
-                                                </ListItemIcon>
-                                                <ListItemText style={{ fontFamily: 'poppins', fontWeight: 600, textDecoration: 'none', }}>Manage Users</ListItemText>
-                                            </NavLink>
-                                        </MenuItem>
-
-                                        <MenuItem >
-                                            <NavLink className={({ isActive, isPending }) => isPending ? "pending" : isActive ? "active" : "nonActive"} to='/dashboard/premium-request' style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }} >
-
-                                                <ListItemIcon>
-                                                    <MdOutlineWorkspacePremium style={{ fontSize: '20px', color: '#111' }}></MdOutlineWorkspacePremium>
-                                                </ListItemIcon>
-
-                                                <ListItemText style={{ fontFamily: 'poppins', fontWeight: 600, textDecoration: 'none' }}>Premium Request</ListItemText>
-
-                                            </NavLink>
-                                        </MenuItem>
-
-                                        <MenuItem >
-                                            <NavLink className={({ isActive, isPending }) => isPending ? "pending" : isActive ? "active" : "nonActive"} to='/dashboard/contact-request' style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }} >
-
-                                                <ListItemIcon>
-                                                    <MdConnectWithoutContact style={{ fontSize: '20px', color: '#111' }}></MdConnectWithoutContact>
-                                                </ListItemIcon>
-
-                                                <ListItemText style={{ fontFamily: 'poppins', fontWeight: 600, textDecoration: 'none' }}>Contact Request</ListItemText>
-                                            </NavLink>
-                                        </MenuItem>
-                                    </Box> : <Box>
-
-                                        <MenuItem >
-                                            <NavLink className={({ isActive, isPending }) => isPending ? "pending" : isActive ? "active" : "nonActive"} to='/dashboard/user-dashboard' style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }} >
-                                                <ListItemIcon>
-                                                    <MdOutlineDashboard style={{ fontSize: '20px', color: '#111' }}></MdOutlineDashboard>
-                                                </ListItemIcon>
-                                                <ListItemText style={{ fontFamily: 'poppins', fontWeight: 600, textDecoration: 'none', }}>Dashboard</ListItemText>
-                                            </NavLink>
-                                        </MenuItem>
-
-                                        <MenuItem >
-                                            <NavLink className={({ isActive, isPending }) => isPending ? "pending" : isActive ? "active" : "nonActive"} to='/dashboard/edit-bio-data' style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }} >
-
-                                                <ListItemIcon>
-                                                    <MdEditNote style={{ fontSize: '20px', color: '#111' }}></MdEditNote>
-                                                </ListItemIcon>
-
-                                                <ListItemText style={{ fontFamily: 'poppins', fontWeight: 600, textDecoration: 'none' }}>Edit Bio Data</ListItemText>
-                                            </NavLink>
-                                        </MenuItem>
-
-                                        <MenuItem >
-                                            <NavLink className={({ isActive, isPending }) => isPending ? "pending" : isActive ? "active" : "nonActive"} to='/dashboard/view-bio-data' style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }} >
-
-                                                <ListItemIcon>
-                                                    <MdOutlinePageview style={{ fontSize: '20px', color: '#111' }}></MdOutlinePageview>
-                                                </ListItemIcon>
-
-                                                <ListItemText style={{ fontFamily: 'poppins', fontWeight: 600, textDecoration: 'none' }}>View Bio Data</ListItemText>
-                                            </NavLink>
-                                        </MenuItem>
-
-                                        <MenuItem >
-                                            <NavLink className={({ isActive, isPending }) => isPending ? "pending" : isActive ? "active" : "nonActive"} to='/dashboard/my-contact-request' style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }} >
-
-                                                <ListItemIcon>
-                                                    <MdConnectWithoutContact style={{ fontSize: '20px', color: '#111' }}></MdConnectWithoutContact>
-                                                </ListItemIcon>
-
-                                                <ListItemText style={{ fontFamily: 'poppins', fontWeight: 600, textDecoration: 'none' }}>My Contact Request</ListItemText>
-                                            </NavLink>
-                                        </MenuItem>
-
-                                        <MenuItem >
-                                            <NavLink className={({ isActive, isPending }) => isPending ? "pending" : isActive ? "active" : "nonActive"} to='/dashboard/favorites-bio-data' style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }} >
-
-                                                <ListItemIcon>
-                                                    <MdFavoriteBorder style={{ fontSize: '20px', color: '#111' }}></MdFavoriteBorder>
-                                                </ListItemIcon>
-
-                                                <ListItemText style={{ fontFamily: 'poppins', fontWeight: 600, textDecoration: 'none' }}>My Favorites Bio Data</ListItemText>
-                                            </NavLink>
-                                        </MenuItem>
-
-                                    </Box>
-                                }
-
-
-
-
-
+                                <Typography sx={{ fontSize: '18px', fontWeight: 600, mb: '15px' }}>Filter by Gender</Typography>
+                                <Box display={'flex'} sx={{ flexDirection: 'column' }}>
+                                    <FormControlLabel
+                                        control={<Checkbox checked={maleData} onChange={() => handleGenderCheckBox('Male')} />}
+                                        label="Male"
+                                    />
+                                    <FormControlLabel
+                                        control={<Checkbox checked={femaleData} onChange={() => handleGenderCheckBox('Female')} />}
+                                        label="Female"
+                                    />
+                                </Box>
+                            </MenuList>
+                            <MenuList sx={{ textAlign: 'left' }}>
+                                <Typography sx={{ fontSize: '18px', fontWeight: 600, mb: '15px' }}>Filter by Division</Typography>
+                                <Box display={'flex'} sx={{ flexDirection: 'column' }}>
+                                    <FormControlLabel
+                                        control={<Checkbox checked={dhakaData} onChange={() => handleDivisionCheckbox('Dhaka')} />}
+                                        label="Dhaka"
+                                    />
+                                    <FormControlLabel
+                                        control={<Checkbox checked={chittagongData} onChange={() => handleDivisionCheckbox('Chittagong')} />}
+                                        label="Chittagong"
+                                    />
+                                    <FormControlLabel
+                                        control={<Checkbox checked={barisalData} onChange={() => handleDivisionCheckbox('Barisal')} />}
+                                        label="Barisal"
+                                    />
+                                    <FormControlLabel
+                                        control={<Checkbox checked={mymensinghData} onChange={() => handleDivisionCheckbox('Mymensingh')} />}
+                                        label="Mymensingh"
+                                    />
+                                    <FormControlLabel
+                                        control={<Checkbox checked={rajshahiData} onChange={() => handleDivisionCheckbox('Rajshahi')} />}
+                                        label="Rajshahi"
+                                    />
+                                    <FormControlLabel
+                                        control={<Checkbox checked={rangpurData} onChange={() => handleDivisionCheckbox('Rangpur')} />}
+                                        label="Rangpur"
+                                    />
+                                    <FormControlLabel
+                                        control={<Checkbox checked={sylhetData} onChange={() => handleDivisionCheckbox('Sylhet')} />}
+                                        label="Sylhet"
+                                    />
+                                    <FormControlLabel
+                                        control={<Checkbox checked={khulnaData} onChange={() => handleDivisionCheckbox('Khulna')} />}
+                                        label="Khulna"
+                                    />
+                                </Box>
                             </MenuList>
                         </Paper>
                     </Box>
                     <Grid container justifyContent='space-between' spacing={3} width={'70%'}>
                         {
-                            users?.map(user => <Grid item key={user._id} xs={12} sm={12} md={6}>
+                            filteredData?.map(user => <Grid item key={user._id} xs={12} sm={12} md={6}>
                                 <Paper sx={{ maxWidth: '100%', p: '20px', overflow: 'hidden', position: 'sticky', top: '120px', borderRadius: '10px', boxShadow: '0px 5px 40px 0px #1111112b' }}>
                                     <img src={user?.photo} alt="" width={'100%'} height={'250px'} style={{ borderRadius: '5px' }} referrerPolicy="no-referrer" />
                                     <Box>

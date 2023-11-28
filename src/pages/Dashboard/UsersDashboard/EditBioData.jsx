@@ -109,7 +109,7 @@ const EditBioData = () => {
                 <Box>
                     <Typography variant='h2'>Edit Bio Data</Typography>
                 </Box>
-                <Box sx={{ my: '50px', bgcolor: '#fff', p: '50px' }}>
+                <Box sx={{ mt: '50px', bgcolor: '#fff', p: '50px' }}>
 
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <Typography variant='h3' sx={{ fontSize: '25px', fontFamily: 'Cinzel Decorative', fontWeight: 600, mb: '20px' }}>Basic Info</Typography>
