@@ -11,7 +11,7 @@ const ViewBioData = () => {
                 <Box>
                     <Typography variant='h2'>View Your Bio Data</Typography>
                 </Box>
-                <Box sx={{ my: '50px', bgcolor: '#fff', p: '100px', borderRadius: '10px' }}>
+                <Box sx={{ mt: '50px', bgcolor: '#fff', p: '100px', borderRadius: '10px' }}>
                     <Box display={'flex'} sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
                         <Typography sx={{ fontSize: '25px', fontFamily: 'Playfair Display', fontWeight: 600 }}>Profile</Typography>
                         <Button sx={{ background: '#66451c', color: '#fff', px: '30px', ml: '40px', ":hover": { bgcolor: '#c48c46' } }}>Make Premium</Button>

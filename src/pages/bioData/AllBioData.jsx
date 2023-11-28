@@ -1,14 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import useUser from '../../hooks/useUser';
 import { Box, Button, Checkbox, Container, FormControlLabel, Grid, ListItemIcon, ListItemText, MenuItem, MenuList, Paper, Slider, Typography } from '@mui/material';
-import { MdConnectWithoutContact, MdEditNote, MdFavoriteBorder, MdOutlineDashboard, MdOutlinePageview, MdOutlineWorkspacePremium } from 'react-icons/md';
-import { NavLink } from 'react-router-dom';
-import { FaUsersGear } from 'react-icons/fa6';
-import { Label } from '@mui/icons-material';
 
 const AllBioData = () => {
     const [, allUser] = useUser()
-
     const [maleData, setMaleData] = useState(false)
     const [femaleData, setFemaleData] = useState(false)
     const [dhakaData, setDhakaData] = useState(false)
@@ -179,7 +174,7 @@ const AllBioData = () => {
                                         <Typography sx={{ my: '5px' }}><span style={{ fontWeight: '600', }}>Permanent Division :</span> {user.permanentDivision}</Typography>
                                     </Box>
                                     <Box display={'flex'} justifyContent={'end'} sx={{ mt: '20px' }}>
-                                        <Button href="/" sx={{ background: '#66451c', color: '#fff', px: '30px', ":hover": { bgcolor: '#c48c46' } }}>View Profile</Button>
+                                        <Button href={`/details-bio-data/${user?._id}`} sx={{ background: '#66451c', color: '#fff', px: '30px', ":hover": { bgcolor: '#c48c46' } }}>View Profile</Button>
                                     </Box>
                                 </Paper>
                             </Grid>)

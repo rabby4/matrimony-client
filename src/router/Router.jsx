@@ -19,6 +19,7 @@ import FavoritesBioData from "../pages/Dashboard/UsersDashboard/FavoritesBioData
 import Error from "../pages/error/Error";
 import PrivateRoute from "./PrivateRoute";
 import AllBioData from "../pages/bioData/AllBioData";
+import DetailsBioData from "../pages/bioData/details/DetailsBioData";
 
 const router = createBrowserRouter([
     {
@@ -37,6 +38,11 @@ const router = createBrowserRouter([
             {
                 path: '/biodatas',
                 element: <PrivateRoute><AllBioData></AllBioData></PrivateRoute>
+            },
+            {
+                path: '/details-bio-data/:id',
+                element: <PrivateRoute><DetailsBioData></DetailsBioData></PrivateRoute>,
+                loader: () => fetch('http://localhost:5000/users')
             }
         ]
     },

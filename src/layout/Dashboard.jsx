@@ -32,7 +32,6 @@ const Dashboard = () => {
             <Container>
                 <Box display={'flex'} sx={{ my: '120px', gap: '100px' }}>
                     <Box>
-
                         <Paper sx={{ width: 320, maxWidth: '100%', textAlign: 'center', p: '20px', overflow: 'hidden', position: 'sticky', top: '120px', borderRadius: '5px', boxShadow: '0px 5px 40px 0px #1111112b' }}>
                             <img src={userInfo?.photo ? userInfo?.photo : user?.photoURL} alt="" width={'100%'} style={{ borderRadius: '15px' }} referrerPolicy="no-referrer" />
                             <MenuList sx={{ textAlign: 'left' }}>
