@@ -20,6 +20,7 @@ import Error from "../pages/error/Error";
 import PrivateRoute from "./PrivateRoute";
 import AllBioData from "../pages/bioData/AllBioData";
 import DetailsBioData from "../pages/bioData/details/DetailsBioData";
+import AdminRoute from "./AdminRoute";
 
 const router = createBrowserRouter([
     {
@@ -61,19 +62,19 @@ const router = createBrowserRouter([
             // admin routes
             {
                 path: 'admin-dashboard',
-                element: <AdminDashboard></AdminDashboard>
+                element: <AdminRoute><AdminDashboard></AdminDashboard></AdminRoute>
             },
             {
                 path: 'manage-users',
-                element: <ManageUsers></ManageUsers>
+                element: <AdminRoute><ManageUsers></ManageUsers></AdminRoute>
             },
             {
                 path: 'premium-request',
-                element: <PremiumRequest></PremiumRequest>
+                element: <AdminRoute><PremiumRequest></PremiumRequest></AdminRoute>
             },
             {
                 path: 'contact-request',
-                element: <ContactRequest></ContactRequest>
+                element: <AdminRoute><ContactRequest></ContactRequest></AdminRoute>
             },
             // user routes
             {
@@ -94,7 +95,7 @@ const router = createBrowserRouter([
             },
             {
                 path: 'favorites-bio-data',
-                element: <FavoritesBioData></FavoritesBioData>
+                element: <PrivateRoute><FavoritesBioData></FavoritesBioData></PrivateRoute>
             }
         ]
     }

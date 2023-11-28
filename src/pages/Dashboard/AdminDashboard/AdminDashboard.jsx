@@ -1,16 +1,14 @@
 import React from 'react';
 import useUser from '../../../hooks/useUser';
-import { Box, Paper, Typography } from '@mui/material';
-import FaceIcon from '@mui/icons-material/Face';
+import { Box, Typography } from '@mui/material';
 import { FaUsers, FaFemale, FaDollarSign } from "react-icons/fa";
-import { MdCelebration, MdOutlineWorkspacePremium } from 'react-icons/md';
+import { MdOutlineWorkspacePremium } from 'react-icons/md';
 import { FaUserTie } from "react-icons/fa6";
 
 
 
 const AdminDashboard = () => {
     const [, allUser] = useUser()
-    // const totalUsers = allUser?.filter(users => users?.role !== 'admin')
     const maleBio = allUser?.filter(bio => bio.gender === 'Male')
     const femaleBio = allUser?.filter(bio => bio.gender === 'Female')
 
@@ -55,18 +53,6 @@ const AdminDashboard = () => {
                     </Box>
 
                 </Box>
-
-
-
-
-                {/* <Box>
-                    <FaUsers style={{ fontSize: '30px' }}></FaUsers>
-                    <Typography>All Users</Typography>
-                </Box>
-                <Box>
-                    <FaceIcon></FaceIcon>
-                    <Typography></Typography>
-                </Box> */}
             </Box>
         </>
     );
