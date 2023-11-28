@@ -1,4 +1,4 @@
-import { Box, Button, Container, ListItemIcon, ListItemText, MenuItem, MenuList, Paper, Typography } from '@mui/material';
+import { Box, Button, Container, ListItemIcon, ListItemText, MenuItem, MenuList, Paper } from '@mui/material';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import React from 'react';
 import { NavLink, Outlet } from 'react-router-dom';

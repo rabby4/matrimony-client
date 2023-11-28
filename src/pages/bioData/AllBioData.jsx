@@ -16,48 +16,40 @@ const AllBioData = () => {
     const [khulnaData, setKhulnaData] = useState(false)
 
     const filteredData = allUser?.filter(item => {
-        if (item.role !== 'admin') {
-            if (maleData && item.gender === 'Male') {
-                return true
-            }
-            if (femaleData && item.gender === 'Female') {
-                return true
-            }
-            if (dhakaData && item.permanentDivision
-                === 'Dhaka') {
-                return true
-            }
-            if (chittagongData && item.permanentDivision
-                === 'Chittagong') {
-                return true
-            }
-            if (barisalData && item.permanentDivision
-                === 'Barisal') {
-                return true
-            }
-            if (mymensinghData && item.permanentDivision
-                === 'Mymensingh') {
-                return true
-            }
-            if (rajshahiData && item.permanentDivision
-                === 'Rajshahi') {
-                return true
-            }
-            if (rangpurData && item.permanentDivision
-                === 'Rangpur') {
-                return true
-            }
-            if (sylhetData && item.permanentDivision
-                === 'Sylhet') {
-                return true
-            }
-            if (khulnaData && item.permanentDivision
-                === 'Khulna') {
-                return true
-            }
-            return !maleData && !femaleData && !dhakaData && !chittagongData && !barisalData && !mymensinghData && !rajshahiData && !rangpurData && !sylhetData && !khulnaData;
+        // if (item.role !== 'admin') {
+        if (maleData && item.gender === 'Male') {
+            return true
         }
-        return false
+        if (femaleData && item.gender === 'Female') {
+            return true
+        }
+        if (dhakaData && item.permanentDivision === 'Dhaka') {
+            return true
+        }
+        if (chittagongData && item.permanentDivision === 'Chittagong') {
+            return true
+        }
+        if (barisalData && item.permanentDivision === 'Barisal') {
+            return true
+        }
+        if (mymensinghData && item.permanentDivision === 'Mymensingh') {
+            return true
+        }
+        if (rajshahiData && item.permanentDivision === 'Rajshahi') {
+            return true
+        }
+        if (rangpurData && item.permanentDivision === 'Rangpur') {
+            return true
+        }
+        if (sylhetData && item.permanentDivision === 'Sylhet') {
+            return true
+        }
+        if (khulnaData && item.permanentDivision === 'Khulna') {
+            return true
+        }
+        return !maleData && !femaleData && !dhakaData && !chittagongData && !barisalData && !mymensinghData && !rajshahiData && !rangpurData && !sylhetData && !khulnaData;
+        // }
+        // return false
     }) || []
 
 

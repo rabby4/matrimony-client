@@ -13,17 +13,18 @@ const useUser = () => {
             return res.data;
         },
     })
-    const { data: favUserInfo } = useQuery({
-        queryKey: ['user'],
-        queryFn: async () => {
-            const res = await axiosPublic.get(`/favorites/${user?.email}`);
-            return res.data;
-        },
-    })
+
     const { data: allUser } = useQuery({
         queryKey: ['users'],
         queryFn: async () => {
             const res = await axiosPublic.get(`/users`);
+            return res.data;
+        },
+    })
+    const { data: favUserInfo } = useQuery({
+        queryKey: ['favUser'],
+        queryFn: async () => {
+            const res = await axiosPublic.get(`/favorites/${user.email}`);
             return res.data;
         },
     })
