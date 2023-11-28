@@ -1,61 +1,81 @@
 import React from 'react';
-import useUser from '../../../hooks/useUser';
 import { Box, Button } from '@mui/material';
 import { useTable } from 'react-table';
-import { useQuery } from '@tanstack/react-query';
+import { QueryClient, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import useAuth from '../../../hooks/useAuth';
 import useAxiosPublic from '../../../hooks/useAxiosPublic';
+import useUser from '../../../hooks/useUser';
+import Swal from 'sweetalert2';
 
 
 const FavoritesBioData = () => {
     const { user } = useAuth()
+    const [, , favUserInfo, refetch] = useUser()
     const axiosPublic = useAxiosPublic()
-    const { data: favUserInfo } = useQuery({
-        queryKey: ['favUser'],
-        queryFn: async () => {
-            const res = await axiosPublic.get(`/favorites/${user.email}`);
-            return res.data;
+
+
+    const handleDelete = (id) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axiosPublic.delete(`/favorites/${id}`)
+                    .then(res => {
+                        if (res.data.deletedCount > 0) {
+                            Swal.fire({
+                                title: "Deleted!",
+                                text: "Your file has been deleted.",
+                                icon: "success"
+                            });
+                            refetch()
+                        }
+                    })
+
+            }
+        });
+
+
+    }
+
+    const data = React.useMemo(() => favUserInfo || [], [favUserInfo])
+
+    const columns = React.useMemo(() => [
+        {
+            Header: 'Name',
+            accessor: "name"
         },
-    })
-    console.log(favUserInfo)
-    // const data = React.useMemo(() => favUserInfo || [], [favUserInfo])
+        {
+            Header: 'Permanent Address',
+            accessor: "permanentDivision"
+        },
+        {
+            Header: 'Occupation',
+            accessor: "occupation"
+        },
+        {
+            Header: 'Action',
+            accessor: '_id',
+            Cell: (row) => (
+                <Box>
+                    <Button onClick={() => handleDelete(row.value)}>Delete</Button>
+                </Box>
+            ),
+        }
+    ], []);
 
-    // const columns = React.useMemo(() => [
-    //     {
-    //         Header: 'Name',
-    //         accessor: "name"
-    //     },
-    //     {
-    //         Header: 'Bio Data Id',
-    //         accessor: "_id"
-    //     },
-    //     {
-    //         Header: 'Permanent Address',
-    //         accessor: "permanentDivision"
-    //     },
-    //     {
-    //         Header: 'Occupation',
-    //         accessor: "occupation"
-    //     },
-    //     {
-    //         Header: 'Action',
-    //         accessor: '_id',
-    //         Cell: (row) => (
-    //             <Box>
-    //                 <Button>Delete</Button>
-    //                 {/* onClick={() => handleDelete(row.value)} */}
-    //             </Box>
-    //         ),
-    //     }
-    // ], []);
 
-    // const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({ columns, data })
-    // console.log('headerGroups', headerGroups);
-    // console.log('rows', rows);
+    const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({ columns, data })
+    if (!favUserInfo) return 'loadding...'
     return (
         <>
             <Box>
-                {/* <table {...getTableProps()} className="">
+                <table {...getTableProps()} width={'100%'} style={{ textAlign: 'left' }}>
                     <thead className="">
                         {headerGroups?.map((headerGroup) => (
                             <tr key={headerGroup.id} {...headerGroup.getFooterGroupProps()}>
@@ -81,7 +101,7 @@ const FavoritesBioData = () => {
                             )
                         })}
                     </tbody>
-                </table> */}
+                </table>
             </Box>
         </>
     );

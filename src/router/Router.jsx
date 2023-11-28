@@ -79,19 +79,19 @@ const router = createBrowserRouter([
             // user routes
             {
                 path: 'user-dashboard',
-                element: <UsersDashboard></UsersDashboard>
+                element: <PrivateRoute><UsersDashboard></UsersDashboard></PrivateRoute>
             },
             {
                 path: 'edit-bio-data',
-                element: <EditBioData></EditBioData>,
+                element: <PrivateRoute><EditBioData></EditBioData></PrivateRoute>,
             },
             {
                 path: 'view-bio-data',
-                element: <ViewBioData></ViewBioData>
+                element: <PrivateRoute><ViewBioData></ViewBioData></PrivateRoute>
             },
             {
                 path: 'my-contact-request',
-                element: <MyContactRequest></MyContactRequest>
+                element: <PrivateRoute><MyContactRequest></MyContactRequest></PrivateRoute>
             },
             {
                 path: 'favorites-bio-data',

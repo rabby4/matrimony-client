@@ -21,14 +21,14 @@ const useUser = () => {
             return res.data;
         },
     })
-    const { data: favUserInfo } = useQuery({
+    const { data: favUserInfo, refetch } = useQuery({
         queryKey: ['favUser'],
         queryFn: async () => {
             const res = await axiosPublic.get(`/favorites/${user.email}`);
             return res.data;
         },
     })
-    return [userInfo, allUser, favUserInfo]
+    return [userInfo, allUser, favUserInfo, refetch]
 };
 
 export default useUser;
