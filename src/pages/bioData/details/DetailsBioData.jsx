@@ -6,13 +6,35 @@ import SendIcon from '@mui/icons-material/Send';
 import useAuth from '../../../hooks/useAuth';
 import { MdCelebration, MdOutlineLocationCity, MdPhoneInTalk, MdKeyboardArrowRight } from 'react-icons/md';
 import { FaUsers, FaRegEnvelope } from 'react-icons/fa';
+import useAxiosPublic from '../../../hooks/useAxiosPublic';
+import Swal from 'sweetalert2';
 
 const DetailsBioData = () => {
     const { user } = useAuth()
     const allUsers = useLoaderData()
     const { id } = useParams()
     const singleUser = allUsers.find(user => user._id === id)
+    const axiosPublic = useAxiosPublic()
     console.log(singleUser)
+
+    const handleFavorite = () => {
+        const favData = { ...singleUser, userEmail: user?.email }
+        axiosPublic.post('/favorites', favData)
+            .then(res => {
+                console.log(res.data)
+                if (res.data.acknowledged) {
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: "Bio data are added to your favorite list",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            })
+    }
+
+
     return (
         <>
 
@@ -34,7 +56,7 @@ const DetailsBioData = () => {
                                 <Typography sx={{ my: '5px' }}><span style={{ fontWeight: '600', }}>Phone :</span> {user?.role === 'premium' ? singleUser.phone : ''}</Typography>
                             </Box>
                             <Stack direction="column-reverse" spacing={2} sx={{ mt: '20px' }}>
-                                <Button width='50%' variant="outlined" startIcon={<FavoriteBorderIcon />}>
+                                <Button onClick={handleFavorite} width='50%' variant="outlined" startIcon={<FavoriteBorderIcon />}>
                                     Favorite
                                 </Button>
                                 <Button width='50%' variant="contained" endIcon={<SendIcon />} sx={{}}>
@@ -43,7 +65,7 @@ const DetailsBioData = () => {
                             </Stack>
                         </Paper>
                     </Box>
-                    <Box sx={{ mt: '65px' }} width={'50%'}>
+                    <Box width={'50%'}>
                         <Typography variant='h2'>{singleUser.name}</Typography>
                         <Box display={'flex'} gap={2} sx={{ my: '50px' }}>
                             <Box width={'33.33%'} sx={{ textAlign: 'center', fontFamily: 'Poppins', border: '1px solid #d3d3d3', p: '20px', borderRadius: '8px' }}>

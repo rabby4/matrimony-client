@@ -13,6 +13,13 @@ const useUser = () => {
             return res.data;
         },
     })
+    const { data: favUserInfo } = useQuery({
+        queryKey: ['user'],
+        queryFn: async () => {
+            const res = await axiosPublic.get(`/favorites/${user?.email}`);
+            return res.data;
+        },
+    })
     const { data: allUser } = useQuery({
         queryKey: ['users'],
         queryFn: async () => {
@@ -20,7 +27,7 @@ const useUser = () => {
             return res.data;
         },
     })
-    return [userInfo, allUser]
+    return [userInfo, allUser, favUserInfo]
 };
 
 export default useUser;
