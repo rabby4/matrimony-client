@@ -56,6 +56,40 @@ const Register = () => {
 
     const onSubmit = async (data) => {
         console.log(data)
+
+        if (data.password.length < 6) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Password should be at least 6 characters!",
+            });
+            return;
+        }
+        else if (!/(?=.*?[A-Z])/.test(data.password)) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Password should be at least one Uppercase!",
+            });
+            return;
+        }
+        else if (!/(?=.*?[0-9])/.test(data.password)) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Password should be at least one Number!",
+            });
+            return;
+        }
+        else if (!/(?=.*?[#?!@$%^&*-])/.test(data.password)) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Password should be at least one special character!!",
+            });
+            return;
+        }
+
         createUser(data.email, data.password)
             .then(result => {
                 console.log(result.user)
@@ -109,34 +143,32 @@ const Register = () => {
                                 id="name"
                                 label="Name"
                                 size="small"
-                                {...register("name")}
+                                {...register("name", { required: true })}
                                 sx={{ width: '100%', }}
                             />
+                            {errors.name && <Typography color={'#FF0000'}>Name is required*</Typography>}
                             <TextField
                                 id="email"
                                 label="Email"
                                 size="small"
-                                {...register("email")}
-                                sx={{ width: '100%', my: '20px' }}
+                                {...register("email", { required: true })}
+                                sx={{ width: '100%', mt: '20px' }}
                             />
+                            {errors.email && <Typography color={'#FF0000'}>Email is required*</Typography>}
                             <TextField
                                 id="pass"
                                 label="Password"
                                 size="small"
                                 {...register("password")}
-                                sx={{ width: '100%', }}
+                                sx={{ width: '100%', mt: '20px' }}
                             />
                             <TextField
                                 id="photo"
                                 label="Photo URL"
                                 size="small"
-                                {...register("photo")}
+                                {...register("photo",)}
                                 sx={{ width: '100%', mt: '20px' }}
                             />
-                            {/* <Button component="label" variant="contained" sx={{ mt: '20px' }} startIcon={<CloudUploadIcon />}>
-                                Upload file
-                                <VisuallyHiddenInput type="file" {...register("file")} />
-                            </Button> */}
 
                             <Box display={'flex'} sx={{ alignItems: 'center', my: '20px', }}>
                                 <Checkbox size="small" />

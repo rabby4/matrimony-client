@@ -17,7 +17,7 @@ const FavoritesBioData = () => {
     const handleDelete = (id) => {
         Swal.fire({
             title: "Are you sure?",
-            text: "You won't be able to revert this!",
+            text: "You want to delete your favorite person!",
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
@@ -30,17 +30,14 @@ const FavoritesBioData = () => {
                         if (res.data.deletedCount > 0) {
                             Swal.fire({
                                 title: "Deleted!",
-                                text: "Your file has been deleted.",
+                                text: "Your favorite person has been deleted.",
                                 icon: "success"
                             });
                             refetch()
                         }
                     })
-
             }
         });
-
-
     }
 
     const data = React.useMemo(() => favUserInfo || [], [favUserInfo])

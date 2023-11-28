@@ -21,6 +21,7 @@ import PrivateRoute from "./PrivateRoute";
 import AllBioData from "../pages/bioData/AllBioData";
 import DetailsBioData from "../pages/bioData/details/DetailsBioData";
 import AdminRoute from "./AdminRoute";
+import Contact from "../pages/contact/Contact";
 
 const router = createBrowserRouter([
     {
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
             {
                 path: '/about',
                 element: <About></About>
+            },
+            {
+                path: '/contact',
+                element: <Contact></Contact>
             },
             {
                 path: '/biodatas',

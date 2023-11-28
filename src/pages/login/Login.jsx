@@ -1,6 +1,6 @@
 import { Box, Button, Checkbox, Container, Divider, Stack, TextField, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook, FaInstagram } from "react-icons/fa";
 import useAuth from "../../hooks/useAuth";
@@ -11,6 +11,7 @@ const Login = () => {
     const { login, loginWithGoogle } = useAuth()
     const axiosPublic = useAxiosPublic()
     const navigate = useNavigate()
+    const location = useLocation()
     const {
         register,
         handleSubmit,
@@ -25,13 +26,18 @@ const Login = () => {
                 console.log(result.user)
                 Swal.fire({
                     title: "Good job!",
-                    text: "Registrations successfully",
+                    text: "Logged In Successfully",
                     icon: "success"
                 });
-                navigate('/')
+                navigate(location?.state ? location.state : '/')
             })
             .catch(error => {
                 console.log(error)
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "You entered wrong email and password!",
+                });
             })
     }
     const handleGoogle = () => {
@@ -45,11 +51,16 @@ const Login = () => {
                 axiosPublic.post('/users', userInfo)
                     .then(res => {
                         console.log(res.data)
-                        navigate('/')
+                        navigate(location?.state ? location.state : '/')
                     })
             })
             .catch(error => {
                 console.log(error)
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Logged in failed, try again later!",
+                });
             })
     }
 

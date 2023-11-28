@@ -116,7 +116,8 @@ const EditBioData = () => {
                         <Box>
                             <div className='singleInput'>
                                 <label className='inputLabel'>Name</label>
-                                <input className='inputDesign' placeholder='Full Name' {...register("name")} />
+                                {errors.name && <Typography color={'#FF0000'}>Name is required*</Typography>}
+                                <input className='inputDesign' placeholder='Full Name' {...register("name", { required: true })} />
                             </div>
                         </Box>
                         <Box display={'flex'} sx={{ gap: '20px' }}>
@@ -126,7 +127,8 @@ const EditBioData = () => {
                             </div>
                             <div className='singleInput fiftyWith'>
                                 <label className='inputLabel'>Phone</label>
-                                <input type='number' placeholder='Phone Number' className='inputDesign' {...register("phone")} />
+                                <input type='number' placeholder='Phone Number' className='inputDesign' {...register("phone", { required: true })} />
+                                {errors.phone && <Typography color={'#FF0000'}>Phone Number is required*</Typography>}
                             </div>
                         </Box>
                         <Box>

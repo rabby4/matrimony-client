@@ -24,6 +24,7 @@ const SuccessCounter = () => {
                                         separator=","
                                         decimals={0}
                                         decimal=","
+                                        suffix="+"
                                         enableScrollSpy
                                         scrollSpyDelay={500}
                                     >
@@ -53,6 +54,7 @@ const SuccessCounter = () => {
                                         separator=","
                                         decimals={0}
                                         decimal=","
+                                        suffix="+"
                                         enableScrollSpy
                                         scrollSpyDelay={500}
                                     >
@@ -82,6 +84,7 @@ const SuccessCounter = () => {
                                         separator=","
                                         decimals={0}
                                         decimal=","
+                                        suffix="+"
                                         enableScrollSpy
                                         scrollSpyDelay={500}
                                     >
@@ -111,6 +114,7 @@ const SuccessCounter = () => {
                                         separator=","
                                         decimals={0}
                                         decimal=","
+                                        suffix="+"
                                         enableScrollSpy
                                         scrollSpyDelay={500}
                                     >
