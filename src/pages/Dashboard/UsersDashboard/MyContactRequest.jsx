@@ -2,10 +2,38 @@ import { Box, Button } from '@mui/material';
 import React from 'react';
 import useRequested from '../../../hooks/useRequested';
 import { useTable } from 'react-table';
+import Swal from 'sweetalert2';
+import useAxiosPublic from '../../../hooks/useAxiosPublic';
 
 const MyContactRequest = () => {
-    const [, userData, isAllLoading] = useRequested()
+    const axiosPublic = useAxiosPublic()
+    const [, userData, refresh] = useRequested()
 
+    const handleDelete = (id) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You want to delete your favorite person!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axiosPublic.delete(`/payments/${id}`)
+                    .then(res => {
+                        if (res.data.deletedCount > 0) {
+                            Swal.fire({
+                                title: "Deleted!",
+                                text: "Your favorite person has been deleted.",
+                                icon: "success"
+                            });
+                            refresh()
+                        }
+                    })
+            }
+        });
+    }
     const data = React.useMemo(() => userData || [], [userData])
     const columns = React.useMemo(() => [
         {
@@ -23,21 +51,18 @@ const MyContactRequest = () => {
         {
             Header: 'Status',
             accessor: 'status'
+            // const user = data.find((user) => user._id === row.value);
+            // {row?.status === 'Approve' ? 'Approved' : <Button on variant="outlined">Delete</Button>}
+
         },
         {
             Header: 'Action',
             accessor: '_id',
-            Cell: (row) => {
-                const user = data.find((user) => user._id === row.value);
-
-                return (
-                    <Box sx={{ marginBottom: '15px', marginTop: '20px' }}>
-                        {row?.status === 'Approve' ? 'Approved' : <Button variant="outlined">Delete</Button>}
-
-                        {/* onClick={() => handleDelete(row.original?._id)} */}
-                    </Box>
-                );
-            },
+            Cell: (row) => (
+                <Box>
+                    <Button onClick={() => handleDelete(row.value)} variant="outlined">Delete</Button>
+                </Box>
+            ),
 
         }
     ], [data]);

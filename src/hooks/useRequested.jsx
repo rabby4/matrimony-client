@@ -12,14 +12,14 @@ const useRequested = () => {
             return res.data;
         },
     })
-    const { data: userData, refetch: isRequestedLoading } = useQuery({
+    const { data: userData, refetch: refresh } = useQuery({
         queryKey: ['requestUser'],
         queryFn: async () => {
             const res = await axiosSecure.get(`/payments/${user.email}`);
             return res.data;
         },
     })
-    return [allRequest, userData, isRequestedLoading]
+    return [allRequest, userData, refresh]
 };
 
 export default useRequested;

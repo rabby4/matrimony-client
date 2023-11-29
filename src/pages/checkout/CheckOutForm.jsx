@@ -107,7 +107,7 @@ const CheckOutForm = ({ singleUser }) => {
                     <Typography variant="h2">this is payment page</Typography>
                 </Box>
                 <Box width={'50%'}>
-                    <Typography color={'#eb0359'} sx={{ mb: '20px', fontSize: '18px', fontFamily: 'Poppins', fontWeight: 500 }}>Fill this form. After fill up this form and pay $500, you should wait for Admin approval to Confirm you Request. Thank you.</Typography>
+                    <Typography color={'#eb0359'} sx={{ mb: '20px', fontSize: '18px', fontFamily: 'Poppins', fontWeight: 500 }}>Fill this form. After fill up this form and pay $500, you should wait for Admin approval to Confirm your Request. Thank you.</Typography>
                     <form onSubmit={handleSubmit}>
                         <Box display={'flex'} sx={{ gap: '20px' }}>
                             <div className='singleInput fiftyWith'>

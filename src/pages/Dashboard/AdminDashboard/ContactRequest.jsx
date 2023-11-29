@@ -3,10 +3,20 @@ import useRequested from '../../../hooks/useRequested';
 import { Box, Button } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useTable } from 'react-table';
+import useAxiosSecure from '../../../hooks/useAxiosSecure';
 
 const ContactRequest = () => {
     const [allRequest, isAllLoading] = useRequested()
+    const axiosSecure = useAxiosSecure()
     const data = React.useMemo(() => allRequest || [], [allRequest])
+
+    const handleUpdate = (id) => {
+        axiosSecure.patch(`/payment/${id}`, { status: 'Approved' })
+            .then(res => {
+                console.log(res.data)
+                isAllLoading()
+            })
+    }
 
     const columns = React.useMemo(() => [
         {
@@ -25,11 +35,12 @@ const ContactRequest = () => {
             Header: 'Approve Request',
             accessor: '_id',
             Cell: (row) => {
-                const user = data.find((user) => user._id === row.value);
+                console.log(row.data)
+                // const user = data.find((user) => user._id === row.value);
 
                 return (
                     <Box sx={{ textAlign: 'center', marginBottom: '15px', marginTop: '20px' }}>
-                        {row?.status === 'Approve' ? 'Approved' : <Button variant="outlined">Approve</Button>}
+                        {row.data?.status === 'Approved' ? 'Approved' : <Button onClick={() => handleUpdate(row.value)} variant="outlined">Approve</Button>}
 
                         {/* onClick={() => handleDelete(row.original?._id)} */}
                     </Box>
@@ -37,7 +48,7 @@ const ContactRequest = () => {
             },
 
         }
-    ], [data]);
+    ], []);
 
     const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({ columns, data })
     return (

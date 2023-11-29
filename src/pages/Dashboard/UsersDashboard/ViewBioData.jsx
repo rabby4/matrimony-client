@@ -4,7 +4,7 @@ import useUser from '../../../hooks/useUser';
 
 const ViewBioData = () => {
     const [userInfo] = useUser()
-    console.log(userInfo)
+
     return (
         <>
             <Box>
