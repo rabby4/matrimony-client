@@ -2,7 +2,6 @@ import React from 'react';
 import useUser from '../../../hooks/useUser';
 import { Box, Button } from '@mui/material';
 import { useTable } from 'react-table';
-import DeleteIcon from '@mui/icons-material/Delete';
 
 const ManageUsers = () => {
     const [, allUser] = useUser()
@@ -26,9 +25,9 @@ const ManageUsers = () => {
 
                 return (
                     <Box display={'flex'} sx={{ justifyContent: 'space-between', textAlign: 'center', marginBottom: '15px' }}>
-                        {user?.role === 'admin' ? 'Admin' : <Button variant="outlined" startIcon={<DeleteIcon />}>Make Admin</Button>}
-                        <Button variant="outlined" startIcon={<DeleteIcon />}>
-                            Delete
+                        {user?.role === 'admin' ? 'Admin' : <Button variant="outlined">Make Admin</Button>}
+                        <Button variant="outlined">
+                            Make Premium
                         </Button>
                         {/* onClick={() => handleDelete(row.original?._id)} */}
                     </Box>

@@ -29,7 +29,7 @@ const Login = () => {
                     text: "Logged In Successfully",
                     icon: "success"
                 });
-                navigate(location?.state ? location.state : '/')
+                navigate('/')
             })
             .catch(error => {
                 console.log(error)

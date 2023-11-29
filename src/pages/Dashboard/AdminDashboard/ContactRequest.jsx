@@ -6,31 +6,30 @@ import { useTable } from 'react-table';
 
 const ContactRequest = () => {
     const [allRequest, isAllLoading] = useRequested()
-    console.log(allRequest,)
     const data = React.useMemo(() => allRequest || [], [allRequest])
 
     const columns = React.useMemo(() => [
         {
             Header: 'Name',
-            accessor: "name"
+            accessor: "requesterName"
         },
         {
             Header: 'Email',
-            accessor: "email"
+            accessor: "requesterEmail"
         },
         {
             Header: 'Bio Data ID',
-            accessor: '_id'
+            accessor: 'requesterBioId'
         },
         {
-            Header: 'Action',
-            accessor: 'status',
+            Header: 'Approve Request',
+            accessor: '_id',
             Cell: (row) => {
                 const user = data.find((user) => user._id === row.value);
 
                 return (
-                    <Box display={'flex'} sx={{ justifyContent: 'space-between', textAlign: 'center', marginBottom: '15px' }}>
-                        {row?.status === 'Approve' ? 'Approved' : <Button variant="outlined" startIcon={<DeleteIcon />}>Approve</Button>}
+                    <Box sx={{ textAlign: 'center', marginBottom: '15px', marginTop: '20px' }}>
+                        {row?.status === 'Approve' ? 'Approved' : <Button variant="outlined">Approve</Button>}
 
                         {/* onClick={() => handleDelete(row.original?._id)} */}
                     </Box>
