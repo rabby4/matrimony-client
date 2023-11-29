@@ -1,7 +1,7 @@
 import { Box, Container, Typography } from '@mui/material';
 import React from 'react';
 
-const Contact = () => {
+const CheckOut = () => {
     return (
         <>
             <Container>
@@ -13,4 +13,4 @@ const Contact = () => {
     );
 };
 
-export default Contact;
+export default CheckOut;

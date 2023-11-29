@@ -22,6 +22,7 @@ import AllBioData from "../pages/bioData/AllBioData";
 import DetailsBioData from "../pages/bioData/details/DetailsBioData";
 import AdminRoute from "./AdminRoute";
 import Contact from "../pages/contact/Contact";
+import CheckOut from "../pages/checkout/CheckOut";
 
 const router = createBrowserRouter([
     {
@@ -48,7 +49,11 @@ const router = createBrowserRouter([
             {
                 path: '/details-bio-data/:id',
                 element: <PrivateRoute><DetailsBioData></DetailsBioData></PrivateRoute>,
-                loader: () => fetch('http://localhost:5000/users')
+                loader: () => fetch('https://matrimony-server-roan.vercel.app/users')
+            },
+            {
+                path: '/checkout',
+                element: <CheckOut></CheckOut>
             }
         ]
     },
