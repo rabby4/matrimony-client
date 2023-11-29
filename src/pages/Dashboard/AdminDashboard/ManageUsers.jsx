@@ -25,6 +25,20 @@ const ManageUsers = () => {
                 }
             })
     }
+    const handleMakeAdmin = (id) => {
+        axiosPublic.patch(`/users/admin/${id}`)
+            .then(res => {
+                console.log(res.data)
+                if (res.data.modifiedCount > 0) {
+                    Swal.fire({
+                        title: "Confirm!",
+                        text: "User successfully make Premium member!",
+                        icon: "success"
+                    });
+                    reload()
+                }
+            })
+    }
 
     const columns = React.useMemo(() => [
         {
@@ -43,10 +57,10 @@ const ManageUsers = () => {
 
                 return (
                     <Box display={'flex'} sx={{ justifyContent: 'space-between', textAlign: 'center', marginBottom: '15px' }}>
-                        {user?.role === 'admin' ? 'Admin' : <Button variant="outlined">Make Admin</Button>}
-                        <Button onClick={() => handleUpdatePremium(row.value)} variant="outlined">
+                        {user?.role === 'admin' ? 'Admin' : <Button onClick={() => handleMakeAdmin(row.value)} variant="outlined">Make Admin</Button>}
+                        {user?.premium === true ? "Premium" : <Button onClick={() => handleUpdatePremium(row.value)} variant="outlined">
                             Make Premium
-                        </Button>
+                        </Button>}
                         {/* onClick={() => handleDelete(row.original?._id)} */}
                     </Box>
                 );
