@@ -2,11 +2,29 @@ import React from 'react';
 import useUser from '../../../hooks/useUser';
 import { Box, Button } from '@mui/material';
 import { useTable } from 'react-table';
+import useAxiosPublic from '../../../hooks/useAxiosPublic';
+import Swal from 'sweetalert2';
 
 const ManageUsers = () => {
-    const [, allUser] = useUser()
+    const [, allUser, reload] = useUser()
+    const axiosPublic = useAxiosPublic()
     console.log(allUser)
     const data = React.useMemo(() => allUser || [], [allUser])
+
+    const handleUpdatePremium = (id) => {
+        axiosPublic.patch(`/users/${id}`, { premium: true })
+            .then(res => {
+                console.log(res.data)
+                if (res.data.modifiedCount > 0) {
+                    Swal.fire({
+                        title: "Confirm!",
+                        text: "User successfully make Premium member!",
+                        icon: "success"
+                    });
+                    reload()
+                }
+            })
+    }
 
     const columns = React.useMemo(() => [
         {
@@ -26,7 +44,7 @@ const ManageUsers = () => {
                 return (
                     <Box display={'flex'} sx={{ justifyContent: 'space-between', textAlign: 'center', marginBottom: '15px' }}>
                         {user?.role === 'admin' ? 'Admin' : <Button variant="outlined">Make Admin</Button>}
-                        <Button variant="outlined">
+                        <Button onClick={() => handleUpdatePremium(row.value)} variant="outlined">
                             Make Premium
                         </Button>
                         {/* onClick={() => handleDelete(row.original?._id)} */}

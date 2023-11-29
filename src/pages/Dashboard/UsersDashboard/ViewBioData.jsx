@@ -1,9 +1,41 @@
 import { Box, Button, Divider, Typography } from '@mui/material';
 import React from 'react';
 import useUser from '../../../hooks/useUser';
+import useAxiosPublic from '../../../hooks/useAxiosPublic';
+import Swal from 'sweetalert2';
 
 const ViewBioData = () => {
     const [userInfo] = useUser()
+    const axiosPublic = useAxiosPublic()
+    console.log(userInfo)
+
+    const handleUpdatePremium = (id) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You want to be a premium member?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, make me premium!"
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const res = await axiosPublic.patch(`/users/${id}`, { premium: false })
+                console.log(res.data)
+                if (res.data.modifiedCount > 0) {
+                    Swal.fire({
+                        title: "Confirm!",
+                        text: "Please, wait for Admin approval!",
+                        icon: "success"
+                    });
+                }
+            }
+        });
+
+
+
+
+    }
 
     return (
         <>
@@ -14,7 +46,7 @@ const ViewBioData = () => {
                 <Box sx={{ mt: '50px', bgcolor: '#fff', p: '100px', borderRadius: '10px' }}>
                     <Box display={'flex'} sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
                         <Typography sx={{ fontSize: '25px', fontFamily: 'Playfair Display', fontWeight: 600 }}>Profile</Typography>
-                        <Button sx={{ background: '#66451c', color: '#fff', px: '30px', ml: '40px', ":hover": { bgcolor: '#c48c46' } }}>Make Premium</Button>
+                        <Button onClick={() => handleUpdatePremium(userInfo?._id)} sx={{ background: '#66451c', color: '#fff', px: '30px', ml: '40px', ":hover": { bgcolor: '#c48c46' } }}>Make Premium</Button>
                     </Box>
                     <Box>
                         <Box sx={{ my: '30px' }}>

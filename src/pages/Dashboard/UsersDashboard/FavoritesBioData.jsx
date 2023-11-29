@@ -10,7 +10,7 @@ import Swal from 'sweetalert2';
 
 const FavoritesBioData = () => {
     const { user } = useAuth()
-    const [, , favUserInfo, refetch] = useUser()
+    const [, , , favUserInfo, refetch] = useUser()
     const axiosPublic = useAxiosPublic()
 
 

@@ -14,7 +14,7 @@ const useUser = () => {
         },
     })
 
-    const { data: allUser } = useQuery({
+    const { data: allUser, refetch: reload } = useQuery({
         queryKey: ['users'],
         queryFn: async () => {
             const res = await axiosPublic.get(`/users`);
@@ -28,7 +28,7 @@ const useUser = () => {
             return res.data;
         },
     })
-    return [userInfo, allUser, favUserInfo, refetch]
+    return [userInfo, allUser, reload, favUserInfo, refetch]
 };
 
 export default useUser;

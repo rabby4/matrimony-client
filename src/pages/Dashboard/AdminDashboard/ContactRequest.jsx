@@ -1,9 +1,9 @@
 import React from 'react';
 import useRequested from '../../../hooks/useRequested';
-import { Box, Button } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
+import { Box, Button, Typography } from '@mui/material';
 import { useTable } from 'react-table';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
+import Swal from 'sweetalert2';
 
 const ContactRequest = () => {
     const [allRequest, isAllLoading] = useRequested()
@@ -14,6 +14,15 @@ const ContactRequest = () => {
         axiosSecure.patch(`/payment/${id}`, { status: 'Approved' })
             .then(res => {
                 console.log(res.data)
+                if (res.data.modifiedCount > 0) {
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: "Your work has been saved",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
                 isAllLoading()
             })
     }
@@ -35,12 +44,12 @@ const ContactRequest = () => {
             Header: 'Approve Request',
             accessor: '_id',
             Cell: (row) => {
-                console.log(row.data)
-                // const user = data.find((user) => user._id === row.value);
+                // console.log(row.data)
+                const user = data.find((user) => user._id === row.value);
 
                 return (
-                    <Box sx={{ textAlign: 'center', marginBottom: '15px', marginTop: '20px' }}>
-                        {row.data?.status === 'Approved' ? 'Approved' : <Button onClick={() => handleUpdate(row.value)} variant="outlined">Approve</Button>}
+                    <Box sx={{ marginBottom: '15px', marginTop: '20px' }}>
+                        {user?.status === 'Approved' ? <Typography>Approved</Typography> : <Button onClick={() => handleUpdate(row.value)} variant="outlined">Approve</Button>}
 
                         {/* onClick={() => handleDelete(row.original?._id)} */}
                     </Box>
@@ -55,7 +64,7 @@ const ContactRequest = () => {
         <>
             <Box>
                 <table {...getTableProps()} width={'100%'}>
-                    <thead className="">
+                    <thead style={{ textAlign: 'left' }}>
                         {headerGroups?.map((headerGroup) => (
                             <tr key={headerGroup.id} {...headerGroup.getFooterGroupProps()}>
                                 {headerGroup?.headers?.map((column) => (

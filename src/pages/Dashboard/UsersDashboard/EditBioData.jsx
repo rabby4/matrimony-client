@@ -54,17 +54,16 @@ const EditBioData = () => {
             weight: data.weight,
         };
 
-        const res = await axiosPublic.patch(`/users/${userInfo?._id}`, userData)
+        const res = await axiosPublic.put(`/users/${userInfo?._id}`, userData)
         console.log(res.data)
         if (res.data.modifiedCount > 0) {
             Swal.fire({
                 position: "center",
                 icon: "success",
-                title: "Your work has been saved",
+                title: "Your Data has been saved",
                 showConfirmButton: false,
                 timer: 1500
             });
-            window.location.reload()
         }
     }
 

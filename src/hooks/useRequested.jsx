@@ -19,7 +19,7 @@ const useRequested = () => {
             return res.data;
         },
     })
-    return [allRequest, userData, refresh]
+    return [allRequest, isAllLoading, userData, refresh]
 };
 
 export default useRequested;
