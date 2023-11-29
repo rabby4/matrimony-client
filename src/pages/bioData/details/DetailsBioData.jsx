@@ -59,7 +59,7 @@ const DetailsBioData = () => {
                                 <Button onClick={handleFavorite} width='50%' variant="outlined" startIcon={<FavoriteBorderIcon />}>
                                     Favorite
                                 </Button>
-                                <Button width='50%' variant="contained" endIcon={<SendIcon />} sx={{}}>
+                                <Button href={`/checkout/${singleUser._id}`} width='50%' variant="contained" endIcon={<SendIcon />} sx={{}}>
                                     Contact Request
                                 </Button>
                             </Stack>
@@ -98,7 +98,7 @@ const DetailsBioData = () => {
                                     <MdPhoneInTalk style={{ fontSize: '20px' }}></MdPhoneInTalk>
                                     <Typography sx={{ my: '5px' }}><span style={{ fontWeight: '600', }}>Phone :</span> {singleUser.phone}</Typography>
                                 </Stack>
-                            </Box> : <Button variant="contained" endIcon={<SendIcon />} sx={{ my: '20px' }}>
+                            </Box> : <Button href={`/checkout/${singleUser._id}`} variant="contained" endIcon={<SendIcon />} sx={{ my: '20px' }}>
                                 Contact Request
                             </Button>}
 
