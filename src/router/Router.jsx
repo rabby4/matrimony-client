@@ -53,7 +53,9 @@ const router = createBrowserRouter([
             },
             {
                 path: '/checkout/:id',
-                element: <CheckOut></CheckOut>
+                element: <PrivateRoute><CheckOut></CheckOut></PrivateRoute>,
+                loader: () => fetch(`http://localhost:5000/users`)
+
             }
         ]
     },

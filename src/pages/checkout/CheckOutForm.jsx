@@ -1,11 +1,13 @@
-import { Box } from '@mui/material';
+import { Box, Button, Stack, Typography } from '@mui/material';
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import React, { useEffect, useState } from 'react';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import useAxiosPublic from '../../hooks/useAxiosPublic';
 import useAuth from '../../hooks/useAuth';
+import Swal from 'sweetalert2';
+import useUser from '../../hooks/useUser';
 
-const CheckOutForm = () => {
+const CheckOutForm = ({ singleUser }) => {
     const stripe = useStripe();
     const elements = useElements();
     const [error, setError] = useState('')
@@ -13,13 +15,15 @@ const CheckOutForm = () => {
     const [transactionId, setTransactionId] = useState('')
     const { user } = useAuth()
     const axiosSecure = useAxiosSecure()
+    const [userInfo] = useUser()
     const totalPrice = 500;
+
 
     useEffect(() => {
         if (totalPrice > 0) {
             axiosSecure.post('/create-payment-intent', { price: totalPrice })
                 .then(res => {
-                    console.log(res.data.clientSecret)
+                    // console.log(res.data.clientSecret)
                     setClientSecret(res.data.clientSecret)
                 })
         }
@@ -63,31 +67,33 @@ const CheckOutForm = () => {
         } else {
             console.log('payment intent', paymentIntent)
             if (paymentIntent.status === 'succeeded') {
-                console.log(paymentIntent.id)
+                // console.log(paymentIntent.id)
                 setTransactionId(paymentIntent.id)
 
-                //         // send payment to the database
+                // send payment to the database
                 const payment = {
-                    email: user.email,
+                    name: singleUser?.name,
+                    bioDataId: singleUser?._id,
+                    phone: singleUser?.phone,
+                    email: singleUser.email,
                     price: totalPrice,
-                    transactionId: paymentIntent.id,
-                    date: new Date(), // utc date convert. use moment js.
-                    // cartId: cart.map(item => item._id),
-                    // menuItemId: cart.map(item => item.menuId),
-                    status: 'pending'
+                    requesterName: userInfo?.name,
+                    requesterEmail: userInfo?.email,
+                    requesterBioId: userInfo?._id,
+                    status: 'Pending'
                 }
                 const res = await axiosSecure.post('/payments', payment)
                 console.log('payment saved', res.data)
-                //         if (res.data?.paymentResult?.insertedId) {
-                //             Swal.fire({
-                //                 position: "center",
-                //                 icon: "success",
-                //                 title: "Thanks for your payment",
-                //                 showConfirmButton: false,
-                //                 timer: 1500
-                //             });
+                if (res.data?.paymentResult?.insertedId) {
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: "Thanks for your payment",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
             }
-            //     }
         }
 
     }
@@ -96,30 +102,51 @@ const CheckOutForm = () => {
 
     return (
         <>
-            <Box>
-                <form onSubmit={handleSubmit}>
-                    <CardElement
-                        options={{
-                            style: {
-                                base: {
-                                    fontSize: '16px',
-                                    color: '#424770',
-                                    '::placeholder': {
-                                        color: '#aab7c4',
+            <Stack flexDirection={'row'} gap={3} sx={{ justifyContent: 'space-between' }}>
+                <Box width={'50%'}>
+                    <Typography variant="h2">this is payment page</Typography>
+                </Box>
+                <Box width={'50%'}>
+                    <form onSubmit={handleSubmit}>
+                        <Box display={'flex'} sx={{ gap: '20px' }}>
+                            <div className='singleInput fiftyWith'>
+                                <label className='inputLabel'>Your interested Bio Data Id</label>
+                                <input className='inputDesign' defaultValue={singleUser?._id} readOnly />
+                            </div>
+                            <div className='singleInput fiftyWith'>
+                                <label className='inputLabel'>Your Bio Data Id</label>
+                                <input className='inputDesign' defaultValue={userInfo?._id} readOnly />
+                            </div>
+                        </Box>
+                        <Box display={'flex'} sx={{ gap: '20px' }}>
+                            <div className='singleInput' style={{ width: '100%' }}>
+                                <label className='inputLabel'>Your Email</label>
+                                <input className='inputDesign' defaultValue={userInfo?.email} readOnly />
+                            </div>
+                        </Box>
+                        <CardElement
+                            options={{
+                                style: {
+                                    base: {
+                                        fontSize: '16px',
+                                        color: '#424770',
+                                        '::placeholder': {
+                                            color: '#aab7c4',
+                                        },
+                                    },
+                                    invalid: {
+                                        color: '#9e2146',
                                     },
                                 },
-                                invalid: {
-                                    color: '#9e2146',
-                                },
-                            },
-                        }}
-                    />
+                            }}
+                        />
 
-                    <button disabled={!stripe || !clientSecret} type="submit" >
-                        Pay
-                    </button>
-                </form>
-            </Box>
+                        <Button disabled={!stripe || !clientSecret} variant="contained" type="submit" sx={{ mt: '15px' }} >
+                            Pay & Submit
+                        </Button>
+                    </form>
+                </Box>
+            </Stack>
         </>
     );
 };
