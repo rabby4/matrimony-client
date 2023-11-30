@@ -44,7 +44,7 @@ const router = createBrowserRouter([
             },
             {
                 path: '/biodatas',
-                element: <PrivateRoute><AllBioData></AllBioData></PrivateRoute>
+                element: <AllBioData></AllBioData>
             },
             {
                 path: '/details-bio-data/:id',

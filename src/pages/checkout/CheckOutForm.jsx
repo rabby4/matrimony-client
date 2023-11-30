@@ -84,7 +84,7 @@ const CheckOutForm = ({ singleUser }) => {
                 }
                 const res = await axiosSecure.post('/payments', payment)
                 console.log('payment saved', res.data)
-                if (res.data?.paymentResult?.insertedId) {
+                if (res.data?.paymentResult?.acknowledged) {
                     Swal.fire({
                         position: "center",
                         icon: "success",
