@@ -5,6 +5,7 @@ import { NavLink, Outlet } from 'react-router-dom';
 import { MdOutlineDashboard } from "react-icons/md";
 import { FaUsersGear } from "react-icons/fa6";
 import { MdOutlineWorkspacePremium, MdConnectWithoutContact, MdOutlinePageview, MdEditNote, MdFavoriteBorder } from "react-icons/md";
+import { GiRingBox } from "react-icons/gi";
 import Navbar from '../shared/Navbar';
 import Footer from '../shared/Footer';
 import useAuth from '../hooks/useAuth';
@@ -132,14 +133,19 @@ const Dashboard = () => {
                                                 <ListItemText style={{ fontFamily: 'poppins', fontWeight: 600, textDecoration: 'none' }}>My Favorites Bio Data</ListItemText>
                                             </NavLink>
                                         </MenuItem>
+                                        <MenuItem >
+                                            <NavLink className={({ isActive, isPending }) => isPending ? "pending" : isActive ? "active" : "nonActive"} to='/dashboard/got-married' style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }} >
+
+                                                <ListItemIcon>
+                                                    <GiRingBox style={{ fontSize: '20px', color: '#111' }}></GiRingBox>
+                                                </ListItemIcon>
+
+                                                <ListItemText style={{ fontFamily: 'poppins', fontWeight: 600, textDecoration: 'none' }}>Got Married</ListItemText>
+                                            </NavLink>
+                                        </MenuItem>
 
                                     </Box>
                                 }
-                                {/* admin routes end here */}
-
-                                {/* users routes start from here */}
-
-                                {/* users routes end from here */}
 
                                 <Button onClick={handleLogout} variant="outlined" startIcon={<ExitToAppIcon />} sx={{ bgcolor: '#d32f2f', color: '#fff', border: 'none', ":hover": { border: 'none', bgcolor: '#f44336' }, mt: '20px', fontWeight: 600, fontSize: '14px' }}>
                                     Logout

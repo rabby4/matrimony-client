@@ -236,18 +236,6 @@ const EditBioData = () => {
                             </div>
                         </Box>
 
-
-
-                        {/* <Divider></Divider> */}
-
-
-
-
-                        {/* <Button component="label" variant="contained" sx={{ mt: '20px' }} startIcon={<CloudUploadIcon />}>
-                            Upload file
-                            <VisuallyHiddenInput type="file" {...register("file")} />
-                        </Button> */}
-
                         <Button type="submit" sx={{ width: '100%', background: '#66451c', color: '#fff', px: '30px', mt: '20px', ":hover": { bgcolor: '#c48c46' } }}>Save Bio Data</Button>
                     </form>
                 </Box>
