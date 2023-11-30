@@ -17,7 +17,7 @@ const CheckOut = () => {
     return (
         <>
             <Container>
-                <Box sx={{ my: '120px' }}>
+                <Box height={'100vh'} display={'flex'} sx={{ my: '120px', alignItems: 'center' }}>
                     <Elements stripe={stripePromise}>
                         <CheckOutForm singleUser={singleUser}></CheckOutForm>
                     </Elements>

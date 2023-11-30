@@ -6,7 +6,7 @@ const About = () => {
         <>
             <Container>
                 <Box sx={{ my: '120px' }}>
-                    <Typography variant='h2'>This is checkout page</Typography>
+                    <Typography variant='h2'>This is About page</Typography>
                 </Box>
             </Container>
         </>

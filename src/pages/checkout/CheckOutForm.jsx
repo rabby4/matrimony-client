@@ -6,6 +6,8 @@ import useAxiosPublic from '../../hooks/useAxiosPublic';
 import useAuth from '../../hooks/useAuth';
 import Swal from 'sweetalert2';
 import useUser from '../../hooks/useUser';
+import Lottie from 'lottie-react';
+import payment from '../../assets/payment.json'
 
 const CheckOutForm = ({ singleUser }) => {
     const stripe = useStripe();
@@ -104,7 +106,7 @@ const CheckOutForm = ({ singleUser }) => {
         <>
             <Stack flexDirection={'row'} gap={3} sx={{ justifyContent: 'space-between' }}>
                 <Box width={'50%'}>
-                    <Typography variant="h2">this is payment page</Typography>
+                    <Lottie animationData={payment}></Lottie>
                 </Box>
                 <Box width={'50%'}>
                     <Typography color={'#eb0359'} sx={{ mb: '20px', fontSize: '18px', fontFamily: 'Poppins', fontWeight: 500 }}>Fill this form. After fill up this form and pay $500, you should wait for Admin approval to Confirm your Request. Thank you.</Typography>

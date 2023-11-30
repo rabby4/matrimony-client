@@ -6,7 +6,7 @@ const Contact = () => {
         <>
             <Container>
                 <Box sx={{ my: '120px' }}>
-                    <Typography variant='h2'>This is checkout page</Typography>
+                    <Typography variant='h2'>This is Contact page</Typography>
                 </Box>
             </Container>
         </>
