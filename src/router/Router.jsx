@@ -49,12 +49,12 @@ const router = createBrowserRouter([
             {
                 path: '/details-bio-data/:id',
                 element: <PrivateRoute><DetailsBioData></DetailsBioData></PrivateRoute>,
-                loader: () => fetch('http://localhost:5000/users')
+                loader: () => fetch('https://matrimony-server-roan.vercel.app/users')
             },
             {
                 path: '/checkout/:id',
                 element: <PrivateRoute><CheckOut></CheckOut></PrivateRoute>,
-                loader: () => fetch(`http://localhost:5000/users`)
+                loader: () => fetch(`https://matrimony-server-roan.vercel.app/users`)
 
             }
         ]
