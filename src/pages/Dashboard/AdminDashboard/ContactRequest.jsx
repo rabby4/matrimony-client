@@ -44,18 +44,14 @@ const ContactRequest = () => {
             Header: 'Approve Request',
             accessor: '_id',
             Cell: (row) => {
-                // console.log(row.data)
                 const user = data.find((user) => user._id === row.value);
 
                 return (
                     <Box sx={{ marginBottom: '15px', marginTop: '20px' }}>
                         {user?.status === 'Approved' ? <Typography>Approved</Typography> : <Button onClick={() => handleUpdate(row.value)} variant="outlined">Approve</Button>}
-
-                        {/* onClick={() => handleDelete(row.original?._id)} */}
                     </Box>
                 );
             },
-
         }
     ], []);
 

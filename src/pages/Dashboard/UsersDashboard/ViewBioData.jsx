@@ -7,34 +7,37 @@ import Swal from 'sweetalert2';
 const ViewBioData = () => {
     const [userInfo] = useUser()
     const axiosPublic = useAxiosPublic()
-    console.log(userInfo)
 
     const handleUpdatePremium = (id) => {
-        Swal.fire({
-            title: "Are you sure?",
-            text: "You want to be a premium member?",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, make me premium!"
-        }).then(async (result) => {
-            if (result.isConfirmed) {
-                const res = await axiosPublic.patch(`/users/${id}`, { premium: false })
-                console.log(res.data)
-                if (res.data.modifiedCount > 0) {
-                    Swal.fire({
-                        title: "Confirm!",
-                        text: "Please, wait for Admin approval!",
-                        icon: "success"
-                    });
+        if (userInfo?.premium === true) {
+            Swal.fire({
+                title: "Congratulations!",
+                text: "You are already a premium member!",
+                icon: "success"
+            });
+        } else {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You want to be a premium member?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, make me premium!"
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    const res = await axiosPublic.patch(`/users/${id}`, { premium: false })
+                    console.log(res.data)
+                    if (res.data.modifiedCount > 0) {
+                        Swal.fire({
+                            title: "Confirm!",
+                            text: "Please, wait for Admin approval!",
+                            icon: "success"
+                        });
+                    }
                 }
-            }
-        });
-
-
-
-
+            });
+        }
     }
 
     return (

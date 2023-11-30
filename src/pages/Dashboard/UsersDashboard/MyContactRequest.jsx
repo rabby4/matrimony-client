@@ -42,11 +42,36 @@ const MyContactRequest = () => {
         },
         {
             Header: 'Email',
-            accessor: "email"
+            accessor: "email",
+            Cell: (row) => {
+                const user = data.find((user) => user.email === row.value);
+
+                return (
+                    <Box display={'flex'} sx={{ justifyContent: 'space-between', textAlign: 'center', marginBottom: '15px' }}>
+                        {user?.status === 'Approved' && (
+                            <span>{row?.value}</span>
+                        )}
+
+                    </Box>
+                );
+            },
+
         },
         {
             Header: 'Number',
-            accessor: 'phone'
+            accessor: 'phone',
+            Cell: (row) => {
+                const user = data.find((user) => user.phone === row.value);
+
+                return (
+                    <Box display={'flex'} sx={{ justifyContent: 'space-between', textAlign: 'center', marginBottom: '15px' }}>
+                        {user?.status === 'Approved' && (
+                            <span>{row?.value}</span>
+                        )}
+                    </Box>
+                );
+            },
+
         },
         {
             Header: 'Status',

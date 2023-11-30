@@ -37,7 +37,6 @@ const Register = () => {
     const handleGoogle = () => {
         loginWithGoogle()
             .then(result => {
-                console.log(result.user)
                 const userInfo = {
                     email: result.user?.email,
                     name: result.user?.displayName
@@ -55,7 +54,6 @@ const Register = () => {
 
 
     const onSubmit = async (data) => {
-        console.log(data)
 
         if (data.password.length < 6) {
             Swal.fire({

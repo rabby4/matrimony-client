@@ -1,6 +1,6 @@
 import React from 'react';
 import useUser from '../../../hooks/useUser';
-import { Box, Button } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import { useTable } from 'react-table';
 import useAxiosPublic from '../../../hooks/useAxiosPublic';
 import Swal from 'sweetalert2';
@@ -56,12 +56,11 @@ const ManageUsers = () => {
                 const user = data.find((user) => user._id === row.value);
 
                 return (
-                    <Box display={'flex'} sx={{ justifyContent: 'space-between', textAlign: 'center', marginBottom: '15px' }}>
-                        {user?.role === 'admin' ? 'Admin' : <Button onClick={() => handleMakeAdmin(row.value)} variant="outlined">Make Admin</Button>}
-                        {user?.premium === true ? "Premium" : <Button onClick={() => handleUpdatePremium(row.value)} variant="outlined">
+                    <Box display={'flex'} sx={{ justifyContent: 'space-between', marginBottom: '15px' }}>
+                        {user?.role === 'admin' ? <Typography>Admin</Typography> : <Button onClick={() => handleMakeAdmin(row.value)} variant="outlined">Make Admin</Button>}
+                        {user?.premium === true ? <Typography sx={{ textAlign: 'right' }}>Premium</Typography> : <Button onClick={() => handleUpdatePremium(row.value)} variant="outlined">
                             Make Premium
                         </Button>}
-                        {/* onClick={() => handleDelete(row.original?._id)} */}
                     </Box>
                 );
             },

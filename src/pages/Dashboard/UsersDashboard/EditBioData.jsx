@@ -60,7 +60,7 @@ const EditBioData = () => {
             Swal.fire({
                 position: "center",
                 icon: "success",
-                title: "Your Data has been saved",
+                title: "Your Bio Data has been saved",
                 showConfirmButton: false,
                 timer: 1500
             });
