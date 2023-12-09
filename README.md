@@ -4,7 +4,7 @@ Also, every user has an individual dashboard where he or she can update her deta
 
 Live link: https://matrimony-51be8.web.app/
 
-Technology that I used for this project:
+### Technology that I used for this project:
 - Html
 - Css
 - Javascript
