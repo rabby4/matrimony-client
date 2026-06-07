@@ -1,112 +1,91 @@
-import Box from '@mui/material/Box';
-import Stepper from '@mui/material/Stepper';
-import Step from '@mui/material/Step';
-import StepLabel from '@mui/material/StepLabel';
-import StepContent from '@mui/material/StepContent';
-import Button from '@mui/material/Button';
-import Paper from '@mui/material/Paper';
-import Typography from '@mui/material/Typography';
-import React from 'react';
+import { Box, Card, Grid, Typography } from '@mui/material';
+import { FaUserPlus, FaSearch, FaRegHeart, FaIdCard, FaComments } from 'react-icons/fa';
+import { GiDiamondRing } from 'react-icons/gi';
 import SectionTitle from '../../shared/SectionTitle';
+import { brand } from '../../theme/theme';
 
 const steps = [
     {
+        number: '01',
+        icon: <FaUserPlus />,
         label: 'Register',
-        image: 'https://rn53themes.net/themes/matrimo/images/icon/rings.png',
-        description: `For each ad campaign that you create, you can control how much you're willing to spend on clicks and conversions, which networks and geographical locations you want your ads to show on, and more.`,
+        description: 'Create your free account and build your biodata with photos and partner preferences.',
     },
     {
-        label: 'Find your Match',
-        image: 'https://rn53themes.net/themes/matrimo/images/icon/wedding-2.png',
-        description: 'An ad group contains one or more ads which target a shared set of keywords.',
+        number: '02',
+        icon: <FaSearch />,
+        label: 'Find Your Match',
+        description: 'Browse thousands of verified profiles and filter by age, division and preference.',
     },
     {
-        label: 'Send Interest',
-        image: 'https://rn53themes.net/themes/matrimo/images/icon/chat.png',
-
-        description: 'An ad group contains one or more ads which target a shared set of keywords.',
+        number: '03',
+        icon: <FaRegHeart />,
+        label: 'Add to Favourites',
+        description: 'Shortlist the profiles you like and keep them saved in your personal dashboard.',
     },
     {
-        label: 'Get Profile Information',
-        image: 'https://rn53themes.net/themes/matrimo/images/icon/network.png',
-        description: 'An ad group contains one or more ads which target a shared set of keywords.',
+        number: '04',
+        icon: <FaIdCard />,
+        label: 'Request Contact Info',
+        description: 'Found someone special? Request their contact information securely through the platform.',
     },
     {
-        label: 'Start Meetups',
-        image: 'https://rn53themes.net/themes/matrimo/images/icon/love-birds.png',
-        description: 'An ad group contains one or more ads which target a shared set of keywords.',
+        number: '05',
+        icon: <FaComments />,
+        label: 'Start Conversation',
+        description: 'Connect directly, talk with families and get to know each other better.',
     },
     {
-        label: 'Getting Marriage',
-        image: 'https://rn53themes.net/themes/matrimo/images/icon/wedding-couple.png',
-        description: 'An ad group contains one or more ads which target a shared set of keywords.',
+        number: '06',
+        icon: <GiDiamondRing />,
+        label: 'Getting Married',
+        description: 'Tie the knot and share your success story to inspire thousands of others.',
     },
-
 ];
 
 const Steps = () => {
-    const [activeStep, setActiveStep] = React.useState(0);
-
-    const handleNext = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    };
-
-    const handleBack = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep - 1);
-    };
-
-    const handleReset = () => {
-        setActiveStep(0);
-    };
-
     return (
-        <>
-            <SectionTitle subHeading={'MOMENTS'} heading={'How it works'}></SectionTitle>
-            <Box sx={{ maxWidth: 700, mx: 'auto', my: '100px' }}>
-                <Stepper activeStep={activeStep} orientation="vertical">
-                    {steps.map((step, index) => (
-                        <Step key={step.label}>
-                            <StepLabel>
-                                <Typography sx={{ fontSize: '25px', fontFamily: 'Playfair Display', fontWeight: 600, mb: '-5px' }}>{step.label}</Typography>
-                            </StepLabel>
-                            <StepContent>
-                                <Typography variant="caption" color={'#eb0359'} sx={{ fontWeight: 600 }}>TIMING: 7:00 PM</Typography>
-                                <Box sx={{ alignItems: 'center', justifyContent: 'space-between', mt: '20px' }}>
-                                    <img width={'20%'} src={step.image} alt="" />
-                                    <Typography>{step.description}</Typography>
-                                </Box>
-                                <Box sx={{ mb: 2 }}>
-                                    <div>
-                                        <Button
-                                            variant="contained"
-                                            onClick={handleNext}
-                                            sx={{ mt: 1, mr: 1 }}
-                                        >
-                                            {index === steps.length - 1 ? 'Finish' : 'Continue'}
-                                        </Button>
-                                        <Button
-                                            disabled={index === 0}
-                                            onClick={handleBack}
-                                            sx={{ mt: 1, mr: 1 }}
-                                        >
-                                            Back
-                                        </Button>
-                                    </div>
-                                </Box>
-                            </StepContent>
-                        </Step>
-                    ))}
-                </Stepper>
-                {activeStep === steps.length && (
-                    <Paper square elevation={0} sx={{ p: 3 }}>
-                        <Typography>All steps completed - you&apos;re finished</Typography>
-                        <Button onClick={handleReset} sx={{ mt: 1, mr: 1 }}>
-                            Reset
-                        </Button>
-                    </Paper>
-                )}
-            </Box>
-        </>
+        <Box sx={{ py: '90px' }}>
+            <SectionTitle
+                subHeading={'Simple Process'}
+                heading={'How It Works'}
+                description={'Your journey to a happy marriage in six simple steps.'}
+            />
+            <Grid container spacing={4} sx={{ mt: '20px' }}>
+                {steps.map((step) => (
+                    <Grid item key={step.number} xs={12} sm={6} md={4}>
+                        <Card sx={{
+                            position: 'relative',
+                            height: '100%',
+                            p: '35px 30px',
+                            borderRadius: '14px',
+                            boxShadow: '0px 10px 35px 0px rgba(17,17,17,0.07)',
+                            overflow: 'hidden',
+                            transition: 'transform .3s ease, box-shadow .3s ease',
+                            ':hover': { transform: 'translateY(-6px)', boxShadow: '0px 18px 45px 0px rgba(17,17,17,0.13)' },
+                        }}>
+                            {/* watermark number */}
+                            <Typography sx={{
+                                position: 'absolute', top: '5px', right: '18px',
+                                fontFamily: 'Playfair Display', fontWeight: 700, fontSize: '72px',
+                                color: brand.cream, lineHeight: 1, userSelect: 'none',
+                            }}>
+                                {step.number}
+                            </Typography>
+                            <Box sx={{ color: brand.secondary, fontSize: '34px', mb: '18px' }}>
+                                {step.icon}
+                            </Box>
+                            <Typography sx={{ fontFamily: 'Playfair Display', fontWeight: 700, fontSize: '20px', color: brand.primary, mb: '10px' }}>
+                                {step.label}
+                            </Typography>
+                            <Typography variant='body2' color='text.secondary' sx={{ lineHeight: 1.8 }}>
+                                {step.description}
+                            </Typography>
+                        </Card>
+                    </Grid>
+                ))}
+            </Grid>
+        </Box>
     );
 };
 

@@ -18,6 +18,7 @@ import MyContactRequest from "../pages/Dashboard/UsersDashboard/MyContactRequest
 import FavoritesBioData from "../pages/Dashboard/UsersDashboard/FavoritesBioData";
 import Error from "../pages/error/Error";
 import PrivateRoute from "./PrivateRoute";
+import DashboardRedirect from "./DashboardRedirect";
 import AllBioData from "../pages/bioData/AllBioData";
 import DetailsBioData from "../pages/bioData/details/DetailsBioData";
 import AdminRoute from "./AdminRoute";
@@ -50,12 +51,12 @@ const router = createBrowserRouter([
             {
                 path: '/details-bio-data/:id',
                 element: <PrivateRoute><DetailsBioData></DetailsBioData></PrivateRoute>,
-                loader: () => fetch('https://matrimony-server-roan.vercel.app/users')
+                loader: () => fetch(`${import.meta.env.VITE_API_URL || 'https://matrimony-server-roan.vercel.app'}/users`)
             },
             {
                 path: '/checkout/:id',
                 element: <PrivateRoute><CheckOut></CheckOut></PrivateRoute>,
-                loader: () => fetch(`https://matrimony-server-roan.vercel.app/users`)
+                loader: () => fetch(`${import.meta.env.VITE_API_URL || 'https://matrimony-server-roan.vercel.app'}/users`)
 
             }
         ]
@@ -72,6 +73,11 @@ const router = createBrowserRouter([
         path: 'dashboard',
         element: <PrivateRoute><Dashboard></Dashboard></PrivateRoute>,
         children: [
+            // index: decide admin vs user dashboard after the role check
+            {
+                index: true,
+                element: <DashboardRedirect></DashboardRedirect>
+            },
             // admin routes
             {
                 path: 'admin-dashboard',

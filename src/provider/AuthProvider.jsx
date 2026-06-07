@@ -43,14 +43,21 @@ const AuthProvider = ({ children }) => {
                     .then(res => {
                         if (res.data.token) {
                             localStorage.setItem('access-token', res.data.token)
-                            setLoading(false)
                         }
+                    })
+                    .catch(error => {
+                        console.error('token request failed', error)
+                    })
+                    .finally(() => {
+                        // loading must only end AFTER the token is stored —
+                        // otherwise protected pages fire requests with no token,
+                        // get a 401, and the interceptor logs the user out again.
+                        setLoading(false)
                     })
             } else {
                 localStorage.removeItem('access-token')
                 setLoading(false)
             }
-            setLoading(false)
         })
         return () => {
             return unsubscribe;

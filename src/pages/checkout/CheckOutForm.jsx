@@ -104,14 +104,14 @@ const CheckOutForm = ({ singleUser }) => {
 
     return (
         <>
-            <Stack flexDirection={'row'} gap={3} sx={{ justifyContent: 'space-between' }}>
-                <Box width={'50%'}>
+            <Stack gap={3} sx={{ justifyContent: 'space-between', flexDirection: { xs: 'column', md: 'row' }, alignItems: 'center', width: '100%' }}>
+                <Box sx={{ width: { xs: '100%', md: '50%' }, maxWidth: { xs: '320px', md: 'none' }, mx: 'auto' }}>
                     <Lottie animationData={payment}></Lottie>
                 </Box>
-                <Box width={'50%'}>
+                <Box sx={{ width: { xs: '100%', md: '50%' } }}>
                     <Typography color={'#eb0359'} sx={{ mb: '20px', fontSize: '18px', fontFamily: 'Poppins', fontWeight: 500 }}>Fill this form. After fill up this form and pay $500, you should wait for Admin approval to Confirm your Request. Thank you.</Typography>
                     <form onSubmit={handleSubmit}>
-                        <Box display={'flex'} sx={{ gap: '20px' }}>
+                        <Box display={'flex'} sx={{ gap: { xs: 0, sm: '20px' }, flexDirection: { xs: 'column', sm: 'row' } }}>
                             <div className='singleInput fiftyWith'>
                                 <label className='inputLabel'>Your interested Bio Data Id</label>
                                 <input className='inputDesign' defaultValue={singleUser?._id} readOnly />

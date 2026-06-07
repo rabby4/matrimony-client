@@ -1,132 +1,179 @@
-import { Box, Button } from '@mui/material';
-import React from 'react';
-import useRequested from '../../../hooks/useRequested';
-import { useTable } from 'react-table';
+import { useMemo } from 'react';
+import {
+    Box, Button, Card, Chip, CircularProgress, Stack, Table, TableBody, TableCell,
+    TableContainer, TableHead, TableRow, Typography
+} from '@mui/material';
+import { Link as RouterLink } from 'react-router-dom';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import LockIcon from '@mui/icons-material/Lock';
+import { FaCheckCircle, FaHourglassHalf, FaRegEnvelope } from 'react-icons/fa';
+import { MdConnectWithoutContact, MdPhoneInTalk } from 'react-icons/md';
 import Swal from 'sweetalert2';
+import useRequested from '../../../hooks/useRequested';
 import useAxiosPublic from '../../../hooks/useAxiosPublic';
+import { brand } from '../../../theme/theme';
+
+const headCellStyle = { fontWeight: 600, color: 'text.secondary', fontSize: '12px', letterSpacing: '0.5px', whiteSpace: 'nowrap' };
 
 const MyContactRequest = () => {
     const axiosPublic = useAxiosPublic()
     const [, , userData, refresh] = useRequested()
 
-    const handleDelete = (id) => {
+    const requests = useMemo(() => userData || [], [userData])
+    const approvedCount = requests.filter(request => request.status === 'Approved').length
+    const pendingCount = requests.length - approvedCount
+
+    const handleDelete = (request) => {
         Swal.fire({
-            title: "Are you sure?",
-            text: "You want to delete your favorite person!",
-            icon: "warning",
+            title: 'Cancel this contact request?',
+            text: `Your request for ${request.name || 'this member'}'s contact information will be removed.`,
+            icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, delete it!"
+            confirmButtonColor: '#d33',
+            confirmButtonText: 'Yes, cancel it',
+            cancelButtonText: 'Keep it',
         }).then((result) => {
-            if (result.isConfirmed) {
-                axiosPublic.delete(`/payments/${id}`)
-                    .then(res => {
-                        if (res.data.deletedCount > 0) {
-                            Swal.fire({
-                                title: "Deleted!",
-                                text: "Your favorite person has been deleted.",
-                                icon: "success"
-                            });
-                            refresh()
-                        }
-                    })
-            }
+            if (!result.isConfirmed) return
+            axiosPublic.delete(`/payments/${request._id}`)
+                .then(res => {
+                    if (res.data.deletedCount > 0) {
+                        Swal.fire({ title: 'Removed!', text: 'The contact request has been cancelled.', icon: 'success', timer: 1600, showConfirmButton: false });
+                        refresh()
+                    }
+                })
+                .catch(() => Swal.fire({ icon: 'error', title: 'Oops...', text: 'Could not cancel the request!' }))
         });
     }
-    const data = React.useMemo(() => userData || [], [userData])
-    const columns = React.useMemo(() => [
-        {
-            Header: 'Name',
-            accessor: "name"
-        },
-        {
-            Header: 'Email',
-            accessor: "email",
-            Cell: (row) => {
-                const user = data.find((user) => user.email === row.value);
 
-                return (
-                    <Box display={'flex'} sx={{ justifyContent: 'space-between', textAlign: 'center', marginBottom: '15px' }}>
-                        {user?.status === 'Approved' && (
-                            <span>{row?.value}</span>
-                        )}
-
-                    </Box>
-                );
-            },
-
-        },
-        {
-            Header: 'Number',
-            accessor: 'phone',
-            Cell: (row) => {
-                const user = data.find((user) => user.phone === row.value);
-
-                return (
-                    <Box display={'flex'} sx={{ justifyContent: 'space-between', textAlign: 'center', marginBottom: '15px' }}>
-                        {user?.status === 'Approved' && (
-                            <span>{row?.value}</span>
-                        )}
-                    </Box>
-                );
-            },
-
-        },
-        {
-            Header: 'Status',
-            accessor: 'status'
-            // const user = data.find((user) => user._id === row.value);
-            // {row?.status === 'Approve' ? 'Approved' : <Button on variant="outlined">Delete</Button>}
-
-        },
-        {
-            Header: 'Action',
-            accessor: '_id',
-            Cell: (row) => (
-                <Box>
-                    <Button onClick={() => handleDelete(row.value)} variant="outlined">Delete</Button>
-                </Box>
-            ),
-
-        }
-    ], [data]);
-
-    const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({ columns, data })
-
+    if (!userData) {
+        return (
+            <Card sx={{ p: '80px', borderRadius: '16px', textAlign: 'center', boxShadow: '0px 8px 30px 0px rgba(17,17,17,0.06)' }}>
+                <CircularProgress color='secondary' />
+                <Typography sx={{ color: 'text.secondary', fontSize: '13.5px', mt: '15px' }}>Loading your requests…</Typography>
+            </Card>
+        )
+    }
 
     return (
-        <>
-            <Box>
-                <table {...getTableProps()} width={'100%'}>
-                    <thead style={{ textAlign: 'left' }}>
-                        {headerGroups?.map((headerGroup) => (
-                            <tr key={headerGroup.id} {...headerGroup.getFooterGroupProps()}>
-                                {headerGroup?.headers?.map((column) => (
-                                    <th key={column.id} {...column.getHeaderProps()} className="">
-                                        {column?.render('Header')}
-                                    </th>
+        <Box>
+            {/* page header */}
+            <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent='space-between' alignItems={{ xs: 'flex-start', sm: 'center' }} spacing={2} sx={{ mb: '24px' }}>
+                <Box>
+                    <Typography sx={{ fontFamily: 'Playfair Display', fontWeight: 700, fontSize: { xs: '22px', md: '26px' }, color: brand.primary }}>
+                        My Contact Requests
+                    </Typography>
+                    <Typography sx={{ color: 'text.secondary', fontSize: '13.5px', mt: '2px' }}>
+                        Contact information unlocks once an admin approves your request.
+                    </Typography>
+                </Box>
+                {requests.length > 0 && (
+                    <Stack direction='row' spacing={1.5}>
+                        <Chip
+                            icon={<FaHourglassHalf style={{ fontSize: '12px', color: '#a07400' }} />}
+                            label={`${pendingCount} Pending`}
+                            sx={{ bgcolor: '#fff3d1', color: '#a07400', fontWeight: 700, fontSize: '12.5px' }}
+                        />
+                        <Chip
+                            icon={<FaCheckCircle style={{ fontSize: '13px', color: '#1c7a4b' }} />}
+                            label={`${approvedCount} Approved`}
+                            sx={{ bgcolor: '#e3f7ec', color: '#1c7a4b', fontWeight: 700, fontSize: '12.5px' }}
+                        />
+                    </Stack>
+                )}
+            </Stack>
+
+            <Card sx={{ borderRadius: '16px', boxShadow: '0px 8px 30px 0px rgba(17,17,17,0.06)', overflow: 'hidden' }}>
+                {requests.length === 0 ? (
+                    <Box sx={{ textAlign: 'center', py: '70px', px: '20px' }}>
+                        <MdConnectWithoutContact style={{ fontSize: '48px', color: brand.primaryLight }} />
+                        <Typography sx={{ fontFamily: 'Playfair Display', fontWeight: 700, fontSize: '20px', color: brand.primary, mt: '16px' }}>
+                            No contact requests yet
+                        </Typography>
+                        <Typography sx={{ color: 'text.secondary', fontSize: '14px', mt: '6px', mb: '25px' }}>
+                            Found someone interesting? Send a contact request from their profile.
+                        </Typography>
+                        <Button component={RouterLink} to='/biodatas' variant='contained' color='secondary' sx={{ px: '35px' }}>
+                            Browse Profiles
+                        </Button>
+                    </Box>
+                ) : (
+                    <TableContainer>
+                        <Table sx={{ minWidth: 720 }}>
+                            <TableHead>
+                                <TableRow sx={{ bgcolor: '#fbf8f0' }}>
+                                    <TableCell sx={headCellStyle}>REQUESTED PROFILE</TableCell>
+                                    <TableCell sx={headCellStyle}>CONTACT INFORMATION</TableCell>
+                                    <TableCell sx={headCellStyle}>AMOUNT</TableCell>
+                                    <TableCell sx={headCellStyle}>STATUS</TableCell>
+                                    <TableCell sx={headCellStyle} align='right'>ACTION</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {requests.map(request => (
+                                    <TableRow key={request._id} hover sx={{ '&:last-child td': { border: 0 } }}>
+                                        <TableCell>
+                                            <Typography sx={{ fontSize: '14px', fontWeight: 600 }}>{request.name || 'Member'}</Typography>
+                                            <Typography
+                                                component={RouterLink}
+                                                to={`/details-bio-data/${request.bioDataId}`}
+                                                sx={{ fontSize: '12px', color: brand.secondary, textDecoration: 'none', ':hover': { textDecoration: 'underline' } }}
+                                            >
+                                                Biodata: {request.bioDataId?.slice(-6).toUpperCase()} →
+                                            </Typography>
+                                        </TableCell>
+                                        <TableCell>
+                                            {request.status === 'Approved' ? (
+                                                <Stack spacing={0.5}>
+                                                    <Stack direction='row' spacing={1} alignItems='center'>
+                                                        <FaRegEnvelope style={{ fontSize: '12px', color: brand.secondary }} />
+                                                        <Typography sx={{ fontSize: '13px' }}>{request.email || '—'}</Typography>
+                                                    </Stack>
+                                                    <Stack direction='row' spacing={1} alignItems='center'>
+                                                        <MdPhoneInTalk style={{ fontSize: '14px', color: brand.secondary }} />
+                                                        <Typography sx={{ fontSize: '13px' }}>{request.phone || '—'}</Typography>
+                                                    </Stack>
+                                                </Stack>
+                                            ) : (
+                                                <Stack direction='row' spacing={1} alignItems='center'>
+                                                    <LockIcon sx={{ fontSize: '15px', color: brand.primaryLight }} />
+                                                    <Typography sx={{ fontSize: '12.5px', color: 'text.secondary', fontStyle: 'italic' }}>
+                                                        Visible after approval
+                                                    </Typography>
+                                                </Stack>
+                                            )}
+                                        </TableCell>
+                                        <TableCell sx={{ fontSize: '13.5px', fontWeight: 600 }}>${request.price}</TableCell>
+                                        <TableCell>
+                                            <Chip
+                                                label={request.status === 'Approved' ? 'APPROVED' : 'PENDING'}
+                                                size='small'
+                                                sx={{
+                                                    fontSize: '10.5px', fontWeight: 700, height: '22px',
+                                                    bgcolor: request.status === 'Approved' ? '#e3f7ec' : '#fff5dc',
+                                                    color: request.status === 'Approved' ? '#1c7a4b' : '#a07400',
+                                                }}
+                                            />
+                                        </TableCell>
+                                        <TableCell align='right'>
+                                            <Button
+                                                onClick={() => handleDelete(request)}
+                                                size='small'
+                                                variant='outlined'
+                                                color='error'
+                                                startIcon={<DeleteOutlineIcon sx={{ fontSize: '16px' }} />}
+                                                sx={{ fontSize: '12px', whiteSpace: 'nowrap' }}
+                                            >
+                                                {request.status === 'Approved' ? 'Remove' : 'Cancel'}
+                                            </Button>
+                                        </TableCell>
+                                    </TableRow>
                                 ))}
-                            </tr>
-                        ))}
-                    </thead>
-                    <tbody {...getTableBodyProps()}>
-                        {rows?.map((row) => {
-                            prepareRow(row)
-                            return (
-                                <tr key={row?.id} {...row?.getRowProps()}>
-                                    {row?.cells?.map((cell) => (
-                                        <td key={cell?.id} {...cell?.getCellProps()} className="">
-                                            {cell?.render('Cell')}
-                                        </td>
-                                    ))}
-                                </tr>
-                            )
-                        })}
-                    </tbody>
-                </table>
-            </Box>
-        </>
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                )}
+            </Card>
+        </Box>
     );
 };
 

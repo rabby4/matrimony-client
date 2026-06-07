@@ -1,66 +1,76 @@
-import { Box, Container, Typography } from '@mui/material';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
+import { Box, Card, CardContent, Container, Typography } from '@mui/material';
+import { MdVerifiedUser } from 'react-icons/md';
+import { FaHandHoldingHeart } from 'react-icons/fa';
+import { GiDiamondRing } from 'react-icons/gi';
+import SectionTitle from '../../shared/SectionTitle';
+import { brand } from '../../theme/theme';
+
+const features = [
+    {
+        id: 1,
+        icon: <MdVerifiedUser />,
+        title: 'Genuine Profiles',
+        description: 'Every biodata is reviewed by our team, so you always connect with real, verified members.',
+    },
+    {
+        id: 2,
+        icon: <FaHandHoldingHeart />,
+        title: 'Most Trusted',
+        description: 'A safe and trusted matrimony platform with full privacy control over your personal information.',
+    },
+    {
+        id: 3,
+        icon: <GiDiamondRing />,
+        title: '2000+ Marriages',
+        description: 'Thousands of happy couples have already found their life partner through our platform.',
+    },
+];
 
 const ChooseUs = () => {
     return (
-        <>
-            <Box sx={{ textAlign: 'center', marginTop: '100px' }}>
-                <Box>
-                    <img className='chooseImg' src="https://rn53themes.net/themes/matrimo/images/icon/why-us-1.png" alt="" />
-                </Box>
-                <Box sx={{ backgroundColor: '#2a2c3c', py: '120px', mt: '-132px' }}>
-                    <Typography variant='h4' color={'#ffb400'} sx={{ fontSize: { xs: '15px', sm: '25px' }, fontFamily: 'Playfair Display', }}> <span style={{ fontSize: '40px' }}>#1</span> MATRIMONY</Typography>
-
-                    <Typography variant='h1' sx={{ fontSize: { xs: '40px', sm: '75px' }, fontFamily: 'Playfair Display', textTransform: 'capitalize', fontWeight: 700, background: 'linear-gradient(45deg, #00ff72, #66b5ff 80%)', backgroundClip: 'text', WebkitTextFillColor: 'transparent' }}> Why choose us</Typography>
-
-                    <Typography variant='h5' color={'#fff'} sx={{ fontSize: { xs: '15px', sm: '20px' }, fontFamily: 'poppins', textTransform: 'capitalize', fontWeight: 400, mt: '15px' }}> Most trusted Matrimony Brand in the World.</Typography>
-                </Box>
-                <Container>
-                    <Box sx={{ mt: '-80px', justifyContent: 'center', flexWrap: { xs: 'wrap' } }} display={'flex'} gap={3}>
-                        <Card sx={{ maxWidth: 345, py: '50px', px: '40px', boxShadow: '0px 0px 30px 0px #00000015', borderRadius: '8px', ":hover": { boxShadow: '0px 0px 50px 0px #00000030' } }}>
-                            {/* <CardActionArea sx={{}}> */}
-                            <img style={{ width: '50px' }} src="https://rn53themes.net/themes/matrimo/images/icon/prize.png" alt="" />
-                            <CardContent>
-                                <Typography gutterBottom variant="h5" component="div" color={'primary'} sx={{ fontSize: '18px', fontWeight: 600 }}>
-                                    Genuine profiles
-                                </Typography>
-                                <Typography variant="body2" color="primary">
-                                    Contact genuine profiles with 100% verified mobile
-                                </Typography>
-                            </CardContent>
-                            {/* </CardActionArea> */}
-                        </Card>
-                        <Card sx={{ maxWidth: 345, py: '50px', px: '40px', boxShadow: '0px 0px 30px 0px #00000015', borderRadius: '8px', ":hover": { boxShadow: '0px 0px 50px 0px #00000030' } }}>
-                            {/* <CardActionArea sx={{}}> */}
-                            <img style={{ width: '50px' }} src="https://rn53themes.net/themes/matrimo/images/icon/trust.png" alt="" />
-                            <CardContent>
-                                <Typography gutterBottom variant="h5" component="div" color={'primary'} sx={{ fontSize: '18px', fontWeight: 600 }}>
-                                    Most trusted
-                                </Typography>
-                                <Typography variant="body2" color="primary">
-                                    The most trusted wedding matrimony brand lorem
-                                </Typography>
-                            </CardContent>
-                            {/* </CardActionArea> */}
-                        </Card>
-                        <Card sx={{ maxWidth: 345, py: '50px', px: '40px', boxShadow: '0px 0px 30px 0px #00000015', borderRadius: '8px', ":hover": { boxShadow: '0px 0px 50px 0px #00000030' } }}>
-                            {/* <CardActionArea sx={{}}> */}
-                            <img style={{ width: '50px' }} src="https://rn53themes.net/themes/matrimo/images/icon/rings.png" alt="" />
-                            <CardContent>
-                                <Typography gutterBottom variant="h5" component="div" color={'primary'} sx={{ fontSize: '18px', fontWeight: 600 }}>
-                                    2000+ weddings
-                                </Typography>
-                                <Typography variant="body2" color="primary">
-                                    Lakhs of peoples have found their life partner
-                                </Typography>
-                            </CardContent>
-                            {/* </CardActionArea> */}
-                        </Card>
-                    </Box>
-                </Container>
+        <Box sx={{ mt: '60px' }}>
+            {/* dark band */}
+            <Box sx={{ bgcolor: brand.dark, pt: '90px', pb: '170px' }}>
+                <SectionTitle
+                    light
+                    subHeading={'#1 Matrimony'}
+                    heading={'Why Choose Us'}
+                    description={'We are more than a matchmaking site — we help families find the right person, the right way.'}
+                />
             </Box>
-        </>
+            {/* feature cards overlapping the dark band */}
+            <Container>
+                <Box sx={{ mt: '-110px', display: 'flex', justifyContent: 'center', gap: 3, flexWrap: { xs: 'wrap', md: 'nowrap' } }}>
+                    {features.map(feature => (
+                        <Card key={feature.id} sx={{
+                            maxWidth: 360, width: '100%',
+                            py: '40px', px: '30px', textAlign: 'center',
+                            borderRadius: '14px',
+                            boxShadow: '0px 15px 40px 0px rgba(17,17,17,0.12)',
+                            transition: 'transform .3s ease',
+                            ':hover': { transform: 'translateY(-8px)' },
+                        }}>
+                            <Box sx={{
+                                width: '74px', height: '74px', mx: 'auto',
+                                borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                bgcolor: brand.cream, border: `1px dashed ${brand.primaryLight}`,
+                                color: brand.secondary, fontSize: '32px',
+                            }}>
+                                {feature.icon}
+                            </Box>
+                            <CardContent>
+                                <Typography gutterBottom sx={{ fontFamily: 'Playfair Display', fontSize: '20px', fontWeight: 700, color: brand.primary }}>
+                                    {feature.title}
+                                </Typography>
+                                <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.8 }}>
+                                    {feature.description}
+                                </Typography>
+                            </CardContent>
+                        </Card>
+                    ))}
+                </Box>
+            </Container>
+        </Box>
     );
 };
 

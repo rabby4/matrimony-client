@@ -56,6 +56,13 @@ body {
   width: 50%;
 }
 
+/* stack 50% form fields on small screens */
+@media only screen and (max-width: 600px) {
+  .fiftyWith {
+    width: 100%;
+  }
+}
+
 .singleInput {
   display: flex;
   flex-direction: column;

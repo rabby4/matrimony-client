@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../provider/AuthProvider";
 
 const axiosSecure = axios.create({
-    baseURL: 'https://matrimony-server-roan.vercel.app'
+    baseURL: import.meta.env.VITE_API_URL || 'https://matrimony-server-roan.vercel.app'
 })
 
 const useAxiosSecure = () => {

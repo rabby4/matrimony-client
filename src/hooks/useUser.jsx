@@ -7,7 +7,8 @@ const useUser = () => {
     const { user } = useAuth()
     const axiosPublic = useAxiosPublic()
     const { data: userInfo } = useQuery({
-        queryKey: ['user'],
+        queryKey: ['user', user?.email],
+        enabled: !!user?.email,
         queryFn: async () => {
             const res = await axiosPublic.get(`/users/${user?.email}`);
             return res.data;
@@ -22,7 +23,8 @@ const useUser = () => {
         },
     })
     const { data: favUserInfo, refetch } = useQuery({
-        queryKey: ['favUser'],
+        queryKey: ['favUser', user?.email],
+        enabled: !!user?.email,
         queryFn: async () => {
             const res = await axiosPublic.get(`/favorites/${user.email}`);
             return res.data;

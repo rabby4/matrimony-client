@@ -1,170 +1,205 @@
-import { Box, Button, Container, ListItemIcon, ListItemText, MenuItem, MenuList, Paper } from '@mui/material';
-import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import React from 'react';
-import { NavLink, Outlet } from 'react-router-dom';
-import { MdOutlineDashboard } from "react-icons/md";
-import { FaUsersGear } from "react-icons/fa6";
-import { MdOutlineWorkspacePremium, MdConnectWithoutContact, MdOutlinePageview, MdEditNote, MdFavoriteBorder } from "react-icons/md";
-import { GiRingBox } from "react-icons/gi";
-import Navbar from '../shared/Navbar';
-import Footer from '../shared/Footer';
-import useAuth from '../hooks/useAuth';
-import useUser from '../hooks/useUser';
-import useAdmin from '../hooks/useAdmin';
+import { useState } from "react"
+import { NavLink, Outlet, Link as RouterLink } from "react-router-dom"
+import {
+	Avatar, Box, Chip, Divider, Drawer, IconButton, List, ListItemButton,
+	ListItemIcon, ListItemText, Stack, Tooltip, Typography,
+} from "@mui/material"
+import MenuIcon from "@mui/icons-material/Menu"
+import { MdOutlineDashboard, MdOutlineWorkspacePremium, MdConnectWithoutContact, MdOutlinePageview, MdEditNote, MdFavoriteBorder } from "react-icons/md"
+import { FaUsersGear } from "react-icons/fa6"
+import { GiRingBox } from "react-icons/gi"
+import { IoExitOutline, IoHomeOutline } from "react-icons/io5"
+import Logo from "../shared/Logo"
+import useAuth from "../hooks/useAuth"
+import useUser from "../hooks/useUser"
+import useAdmin from "../hooks/useAdmin"
+import { brand } from "../theme/theme"
 
+const drawerWidth = 280
+
+const adminNav = [
+	{ label: "Dashboard", icon: <MdOutlineDashboard />, path: "/dashboard/admin-dashboard" },
+	{ label: "Manage Users", icon: <FaUsersGear />, path: "/dashboard/manage-users" },
+	{ label: "Premium Requests", icon: <MdOutlineWorkspacePremium />, path: "/dashboard/premium-request" },
+	{ label: "Contact Requests", icon: <MdConnectWithoutContact />, path: "/dashboard/contact-request" },
+]
+
+const userNav = [
+	{ label: "Dashboard", icon: <MdOutlineDashboard />, path: "/dashboard/user-dashboard" },
+	{ label: "Edit Bio Data", icon: <MdEditNote />, path: "/dashboard/edit-bio-data" },
+	{ label: "View Bio Data", icon: <MdOutlinePageview />, path: "/dashboard/view-bio-data" },
+	{ label: "My Contact Requests", icon: <MdConnectWithoutContact />, path: "/dashboard/my-contact-request" },
+	{ label: "My Favourites", icon: <MdFavoriteBorder />, path: "/dashboard/favorites-bio-data" },
+	{ label: "Got Married", icon: <GiRingBox />, path: "/dashboard/got-married" },
+]
 
 const Dashboard = () => {
-    const { user, logout } = useAuth()
-    const [isAdmin] = useAdmin()
-    const [userInfo] = useUser()
+	const { user, logout } = useAuth()
+	const [isAdmin] = useAdmin()
+	const [userInfo] = useUser()
+	const [mobileOpen, setMobileOpen] = useState(false)
 
-    const handleLogout = () => {
-        logout()
-            .then(() => {
-                console.log('logged out successful')
-            })
-            .catch(error => {
-                console.log(error)
-            })
-    }
+	const avatarSrc = userInfo?.photo || user?.photoURL || undefined
+	const navItems = isAdmin ? adminNav : userNav
 
-    return (
-        <>
-            <Container>
-                <Box display={'flex'} sx={{ my: '120px', gap: '100px' }}>
-                    <Box>
-                        <Paper sx={{ width: 320, maxWidth: '100%', textAlign: 'center', p: '20px', overflow: 'hidden', position: 'sticky', top: '120px', borderRadius: '5px', boxShadow: '0px 5px 40px 0px #1111112b' }}>
-                            <img src={userInfo?.photo ? userInfo?.photo : user?.photoURL} alt="" width={'100%'} style={{ borderRadius: '15px' }} referrerPolicy="no-referrer" />
-                            <MenuList sx={{ textAlign: 'left' }}>
-                                {/* Admin routes start from here */}
-                                {
-                                    isAdmin ? <Box>
-                                        <MenuItem >
-                                            <NavLink className={({ isActive, isPending }) => isPending ? "pending" : isActive ? "active" : "nonActive"} to='/dashboard/admin-dashboard' style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }} >
-                                                <ListItemIcon>
-                                                    <MdOutlineDashboard style={{ fontSize: '20px', color: '#111' }}></MdOutlineDashboard>
-                                                </ListItemIcon>
-                                                <ListItemText style={{ fontFamily: 'poppins', fontWeight: 600, textDecoration: 'none', }}>Dashboard</ListItemText>
-                                            </NavLink>
-                                        </MenuItem>
+	const handleLogout = () => {
+		logout().catch((error) => console.error(error))
+	}
 
-                                        <MenuItem >
-                                            <NavLink className={({ isActive, isPending }) => isPending ? "pending" : isActive ? "active" : "nonActive"} to='/dashboard/manage-users' style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }} >
-                                                <ListItemIcon>
-                                                    <FaUsersGear style={{ fontSize: '20px', color: '#111' }}></FaUsersGear>
-                                                </ListItemIcon>
-                                                <ListItemText style={{ fontFamily: 'poppins', fontWeight: 600, textDecoration: 'none', }}>Manage Users</ListItemText>
-                                            </NavLink>
-                                        </MenuItem>
+	const drawerContent = (
+		<Box sx={{ height: "100%", display: "flex", flexDirection: "column", p: "22px 18px" }}>
+			<Box sx={{ px: "8px" }}>
+				<Logo light />
+			</Box>
 
-                                        <MenuItem >
-                                            <NavLink className={({ isActive, isPending }) => isPending ? "pending" : isActive ? "active" : "nonActive"} to='/dashboard/premium-request' style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }} >
+			{/* mini profile */}
+			<Stack direction="row" spacing={1.5} alignItems="center" sx={{
+				mt: "28px", p: "12px 14px", borderRadius: "14px",
+				bgcolor: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.08)",
+			}}>
+				<Avatar
+					src={avatarSrc}
+					alt={user?.displayName || "User"}
+					imgProps={{ referrerPolicy: "no-referrer" }}
+					sx={{ bgcolor: brand.secondary, width: 44, height: 44, fontWeight: 600 }}
+				>
+					{user?.displayName?.charAt(0)?.toUpperCase()}
+				</Avatar>
+				<Box sx={{ minWidth: 0 }}>
+					<Typography noWrap sx={{ color: "#fff", fontWeight: 600, fontSize: "14px" }}>
+						{user?.displayName || "Member"}
+					</Typography>
+					<Chip
+						label={isAdmin ? "Admin" : userInfo?.premium ? "Premium Member" : "Member"}
+						size="small"
+						sx={{
+							height: "20px", fontSize: "10.5px", fontWeight: 700, letterSpacing: "0.5px",
+							bgcolor: isAdmin ? brand.gold : userInfo?.premium ? brand.gold : "rgba(255,255,255,0.12)",
+							color: isAdmin || userInfo?.premium ? "#3a2e10" : "rgba(255,255,255,0.8)",
+						}}
+					/>
+				</Box>
+			</Stack>
 
-                                                <ListItemIcon>
-                                                    <MdOutlineWorkspacePremium style={{ fontSize: '20px', color: '#111' }}></MdOutlineWorkspacePremium>
-                                                </ListItemIcon>
+			{/* navigation */}
+			<Typography sx={{ color: "rgba(255,255,255,0.35)", fontSize: "11px", fontWeight: 600, letterSpacing: "1.5px", mt: "28px", mb: "6px", px: "10px" }}>
+				MENU
+			</Typography>
+			<List sx={{ p: 0 }}>
+				{navItems.map((item) => (
+					<ListItemButton
+						key={item.label}
+						component={NavLink}
+						to={item.path}
+						onClick={() => setMobileOpen(false)}
+						sx={{
+							borderRadius: "10px", mb: "4px", px: "14px", py: "10px",
+							color: "rgba(255,255,255,0.65)",
+							"&:hover": { bgcolor: "rgba(255,255,255,0.07)" },
+							"&.active": {
+								bgcolor: brand.secondary, color: "#fff",
+								boxShadow: "0px 8px 20px 0px rgba(235,3,89,0.35)",
+							},
+						}}
+					>
+						<ListItemIcon sx={{ color: "inherit", minWidth: "38px", fontSize: "20px" }}>
+							{item.icon}
+						</ListItemIcon>
+						<ListItemText primaryTypographyProps={{ fontSize: "14px", fontWeight: 500, fontFamily: "Poppins" }}>
+							{item.label}
+						</ListItemText>
+					</ListItemButton>
+				))}
+			</List>
 
-                                                <ListItemText style={{ fontFamily: 'poppins', fontWeight: 600, textDecoration: 'none' }}>Premium Request</ListItemText>
+			{/* bottom actions */}
+			<Box sx={{ mt: "auto" }}>
+				<Divider sx={{ borderColor: "rgba(255,255,255,0.08)", mb: "10px" }} />
+				<ListItemButton
+					component={RouterLink}
+					to="/"
+					sx={{ borderRadius: "10px", px: "14px", py: "10px", color: "rgba(255,255,255,0.65)", "&:hover": { bgcolor: "rgba(255,255,255,0.07)" } }}
+				>
+					<ListItemIcon sx={{ color: "inherit", minWidth: "38px", fontSize: "19px" }}><IoHomeOutline /></ListItemIcon>
+					<ListItemText primaryTypographyProps={{ fontSize: "14px", fontWeight: 500, fontFamily: "Poppins" }}>Back to Home</ListItemText>
+				</ListItemButton>
+				<ListItemButton
+					onClick={handleLogout}
+					sx={{ borderRadius: "10px", px: "14px", py: "10px", color: "#ff7b9c", "&:hover": { bgcolor: "rgba(235,3,89,0.12)" } }}
+				>
+					<ListItemIcon sx={{ color: "inherit", minWidth: "38px", fontSize: "19px" }}><IoExitOutline /></ListItemIcon>
+					<ListItemText primaryTypographyProps={{ fontSize: "14px", fontWeight: 500, fontFamily: "Poppins" }}>Logout</ListItemText>
+				</ListItemButton>
+			</Box>
+		</Box>
+	)
 
-                                            </NavLink>
-                                        </MenuItem>
+	return (
+		<Box sx={{ display: "flex", minHeight: "100vh", bgcolor: "#f7f4ec" }}>
+			{/* sidebar */}
+			<Box component="nav" sx={{ width: { md: drawerWidth }, flexShrink: { md: 0 } }}>
+				<Drawer
+					variant="temporary"
+					open={mobileOpen}
+					onClose={() => setMobileOpen(false)}
+					ModalProps={{ keepMounted: true }}
+					sx={{
+						display: { xs: "block", md: "none" },
+						"& .MuiDrawer-paper": { width: drawerWidth, bgcolor: brand.dark, borderRight: "none" },
+					}}
+				>
+					{drawerContent}
+				</Drawer>
+				<Drawer
+					variant="permanent"
+					open
+					sx={{
+						display: { xs: "none", md: "block" },
+						"& .MuiDrawer-paper": { width: drawerWidth, bgcolor: brand.dark, borderRight: "none" },
+					}}
+				>
+					{drawerContent}
+				</Drawer>
+			</Box>
 
-                                        <MenuItem >
-                                            <NavLink className={({ isActive, isPending }) => isPending ? "pending" : isActive ? "active" : "nonActive"} to='/dashboard/contact-request' style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }} >
+			{/* main area — minWidth 0 lets wide tables scroll inside their
+			    containers instead of stretching the page horizontally */}
+			<Box component="main" sx={{ flexGrow: 1, minWidth: 0, width: { md: `calc(100% - ${drawerWidth}px)` }, display: "flex", flexDirection: "column" }}>
+				{/* topbar */}
+				<Box sx={{
+					position: "sticky", top: 0, zIndex: 30,
+					bgcolor: "rgba(255,255,255,0.92)", backdropFilter: "blur(8px)",
+					borderBottom: "1px solid #ece5d3",
+					px: { xs: "16px", md: "32px" }, py: "12px",
+					display: "flex", alignItems: "center", justifyContent: "space-between",
+				}}>
+					<Stack direction="row" spacing={1.5} alignItems="center">
+						<IconButton onClick={() => setMobileOpen(true)} sx={{ display: { md: "none" } }}>
+							<MenuIcon />
+						</IconButton>
+						<Typography sx={{ fontFamily: "Playfair Display", fontWeight: 700, fontSize: "19px", color: brand.primary }}>
+							{isAdmin ? "Admin Panel" : "My Dashboard"}
+						</Typography>
+					</Stack>
+					<Tooltip title={user?.email || ""}>
+						<Avatar
+							src={avatarSrc}
+							alt={user?.displayName || "User"}
+							imgProps={{ referrerPolicy: "no-referrer" }}
+							sx={{ bgcolor: brand.secondary, width: 38, height: 38, fontWeight: 600, fontSize: "16px" }}
+						>
+							{user?.displayName?.charAt(0)?.toUpperCase()}
+						</Avatar>
+					</Tooltip>
+				</Box>
 
-                                                <ListItemIcon>
-                                                    <MdConnectWithoutContact style={{ fontSize: '20px', color: '#111' }}></MdConnectWithoutContact>
-                                                </ListItemIcon>
+				{/* page content */}
+				<Box sx={{ p: { xs: "18px", md: "32px" }, flexGrow: 1 }}>
+					<Outlet />
+				</Box>
+			</Box>
+		</Box>
+	)
+}
 
-                                                <ListItemText style={{ fontFamily: 'poppins', fontWeight: 600, textDecoration: 'none' }}>Contact Request</ListItemText>
-                                            </NavLink>
-                                        </MenuItem>
-                                    </Box> : <Box>
-
-                                        <MenuItem >
-                                            <NavLink className={({ isActive, isPending }) => isPending ? "pending" : isActive ? "active" : "nonActive"} to='/dashboard/user-dashboard' style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }} >
-                                                <ListItemIcon>
-                                                    <MdOutlineDashboard style={{ fontSize: '20px', color: '#111' }}></MdOutlineDashboard>
-                                                </ListItemIcon>
-                                                <ListItemText style={{ fontFamily: 'poppins', fontWeight: 600, textDecoration: 'none', }}>Dashboard</ListItemText>
-                                            </NavLink>
-                                        </MenuItem>
-
-                                        <MenuItem >
-                                            <NavLink className={({ isActive, isPending }) => isPending ? "pending" : isActive ? "active" : "nonActive"} to='/dashboard/edit-bio-data' style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }} >
-
-                                                <ListItemIcon>
-                                                    <MdEditNote style={{ fontSize: '20px', color: '#111' }}></MdEditNote>
-                                                </ListItemIcon>
-
-                                                <ListItemText style={{ fontFamily: 'poppins', fontWeight: 600, textDecoration: 'none' }}>Edit Bio Data</ListItemText>
-                                            </NavLink>
-                                        </MenuItem>
-
-                                        <MenuItem >
-                                            <NavLink className={({ isActive, isPending }) => isPending ? "pending" : isActive ? "active" : "nonActive"} to='/dashboard/view-bio-data' style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }} >
-
-                                                <ListItemIcon>
-                                                    <MdOutlinePageview style={{ fontSize: '20px', color: '#111' }}></MdOutlinePageview>
-                                                </ListItemIcon>
-
-                                                <ListItemText style={{ fontFamily: 'poppins', fontWeight: 600, textDecoration: 'none' }}>View Bio Data</ListItemText>
-                                            </NavLink>
-                                        </MenuItem>
-
-                                        <MenuItem >
-                                            <NavLink className={({ isActive, isPending }) => isPending ? "pending" : isActive ? "active" : "nonActive"} to='/dashboard/my-contact-request' style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }} >
-
-                                                <ListItemIcon>
-                                                    <MdConnectWithoutContact style={{ fontSize: '20px', color: '#111' }}></MdConnectWithoutContact>
-                                                </ListItemIcon>
-
-                                                <ListItemText style={{ fontFamily: 'poppins', fontWeight: 600, textDecoration: 'none' }}>My Contact Request</ListItemText>
-                                            </NavLink>
-                                        </MenuItem>
-
-                                        <MenuItem >
-                                            <NavLink className={({ isActive, isPending }) => isPending ? "pending" : isActive ? "active" : "nonActive"} to='/dashboard/favorites-bio-data' style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }} >
-
-                                                <ListItemIcon>
-                                                    <MdFavoriteBorder style={{ fontSize: '20px', color: '#111' }}></MdFavoriteBorder>
-                                                </ListItemIcon>
-
-                                                <ListItemText style={{ fontFamily: 'poppins', fontWeight: 600, textDecoration: 'none' }}>My Favorites Bio Data</ListItemText>
-                                            </NavLink>
-                                        </MenuItem>
-                                        <MenuItem >
-                                            <NavLink className={({ isActive, isPending }) => isPending ? "pending" : isActive ? "active" : "nonActive"} to='/dashboard/got-married' style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }} >
-
-                                                <ListItemIcon>
-                                                    <GiRingBox style={{ fontSize: '20px', color: '#111' }}></GiRingBox>
-                                                </ListItemIcon>
-
-                                                <ListItemText style={{ fontFamily: 'poppins', fontWeight: 600, textDecoration: 'none' }}>Got Married</ListItemText>
-                                            </NavLink>
-                                        </MenuItem>
-
-                                    </Box>
-                                }
-
-                                <Button onClick={handleLogout} variant="outlined" startIcon={<ExitToAppIcon />} sx={{ bgcolor: '#d32f2f', color: '#fff', border: 'none', ":hover": { border: 'none', bgcolor: '#f44336' }, mt: '20px', fontWeight: 600, fontSize: '14px' }}>
-                                    Logout
-                                </Button>
-
-
-                            </MenuList>
-                        </Paper>
-                    </Box>
-                    <Box width={'100%'}>
-                        <Navbar></Navbar>
-                        <Outlet></Outlet>
-
-                    </Box>
-                </Box>
-            </Container>
-            <Footer></Footer>
-        </>
-    );
-};
-
-export default Dashboard;
+export default Dashboard
